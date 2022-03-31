@@ -17,8 +17,14 @@
     <applicationManager autoExpand="true"/>
 
     <!-- Configures the application on a specified context root -->
-    <webApplication contextRoot="/ejar" location="ejar.war" />
+    <webApplication contextRoot="/" location="ejar.war" />
 
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
+     <cors domain="/"
+    allowedOrigins="*"
+    allowedMethods="GET, POST"
+    allowCredentials="true"
+    allowedHeaders="Content-Type, authorization"
+    exposeHeaders="Content-Type"/>
 </server>
