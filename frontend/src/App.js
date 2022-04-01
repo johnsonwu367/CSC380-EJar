@@ -3,8 +3,9 @@ import React from 'react'
 import Navbar from './components/Navbar/Navbar';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Main from './components/Sections/Main';
-import InfoSection from './components/InfoSection/InfoSection';
-import { homeObjOne } from './components/InfoSection/Data';
+import About from './components/Sections/About';
+import AppFeatures from './components/Sections/AppFeatures';
+import Contact from './components/Sections/Contact';
 
 function App() {
   return (
@@ -14,8 +15,10 @@ function App() {
         {/* <Routes>
           <Route path='/' exact />
         </Routes> */}
-        {/* <Main/> */}
-        {/* <InfoSection {...homeObjOne} /> */}
+        <Main/>
+        <About/>
+        <AppFeatures/>
+        <Contact/>
       </Router>
         {/* <Test/> */}
     </div>

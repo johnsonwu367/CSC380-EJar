@@ -1,19 +1,33 @@
 import styled from 'styled-components'
-import { NavLink as Link } from 'react-router-dom'
-import { FaBars } from "react-icons/fa"
+import { NavLink as LinkR } from 'react-router-dom'
+import { Link as LinkS } from 'react-scroll'
 
 export const Nav = styled.nav`
-  /* position: fixed; */
+  position: fixed;
   top: 0;
   background: #000;
   height: 80px;
   display: flex;
   justify-content: space-between;
+  width:100%;
   padding: 0.5rem calc((100vw - 1000px) / 2);
   z-index: 10;
-`;
+  /* @media screen and (max-width: 768px) {
+      transition: 0.8s all ease;
+  } */
+`
 
-export const NavLogo = styled(Link)`
+// export const NavbarContainer = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   height: 80px;
+//   z-index: 1;
+//   width: 100%;
+//   padding: 0 24px;
+//   max-width: 1100px;
+// `
+
+export const NavLogo = styled(LinkR)`
     color: #fff;
     justify-self: flex-start;
     cursor: pointer;
@@ -22,9 +36,9 @@ export const NavLogo = styled(Link)`
     display: flex;
     align-items: center;
     margin-left: 1rem;
-`;
+`
 
-export const NavLink = styled(Link)`
+export const NavLink = styled(LinkS)`
   color: #fff;
   display: flex;
   align-items: center;
@@ -33,8 +47,11 @@ export const NavLink = styled(Link)`
   padding: 0 1rem;
   height: 100%;
   cursor: pointer;
+  /* &.active {
+    color: #4b59f7;
+  } */
   &.active {
-    color: #15cdfc;
+      border-bottom: 3px solid #4b59f7
   }
   @media screen and (max-width: 768px) {
       text-align: center;
@@ -46,7 +63,7 @@ export const NavLink = styled(Link)`
          transition: all 0.5s ease;
       }
   }
-`;
+`
 
 export const MobileIcon = styled.div`
   display: none;
@@ -60,7 +77,7 @@ export const MobileIcon = styled.div`
     font-size: 1.8rem;
     cursor: pointer;
   }
-`;
+`
 
 export const NavMenu = styled.ul`
   display: flex;
@@ -81,13 +98,13 @@ export const NavMenu = styled.ul`
     transition: all 0.5s ease;
     background: #101522;
   }
-`;
+`
 
 export const NavItem = styled.li`
   height: 80px;
   border-bottom: 2px solid transparent;
   &:hover {
-      border-bottom: 2px solid #4b59f7
+      border-bottom: 3px solid #4b59f7
   }
   @media screen and (max-width: 768px) {
       width: 100%;
@@ -106,7 +123,7 @@ export const NavItem = styled.li`
 //   }
 // `;
 
-export const NavBtnLink = styled(Link)`
+export const NavBtnLink = styled(LinkR)`
   border-radius: 4px;
   background: #256ce1;
   padding: 10px 22px;
