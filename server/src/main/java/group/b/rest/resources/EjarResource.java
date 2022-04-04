@@ -1,11 +1,17 @@
 package group.b.rest.resources;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.bson.Document;
+
+import group.b.rest.database.EjarInterface;
 
 @Path("ejar")
 public class EjarResource{
@@ -27,6 +33,14 @@ public class EjarResource{
         //
         // if user email is found in database: return respective user data or account information
         // else create a new user instance or account in the database with users' google email.
+    }
+
+    @GET
+    @Path("/get-all-users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsers() {
+        List <Document> allUsers = new EjarInterface().getAllUsers();
+        return Response.status(Response.Status.OK).entity(allUsers).build();
     }
 
 }
