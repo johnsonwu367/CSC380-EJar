@@ -6,6 +6,7 @@ import Main from './components/Sections/Main';
 import About from './components/Sections/About';
 import AppFeatures from './components/Sections/AppFeatures';
 import Contact from './components/Sections/Contact';
+import JarsPage from './components/Jars/JarsPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <About/>
         <AppFeatures/>
         <Contact/>
+          <JarsPage/>
       </Router>
         {/* <Test/> */}
     </div>
