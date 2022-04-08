@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import GoogleLogin from 'react-google-login';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const GoogleLoginBtn = () => {
-    const [loginData, setLoginData] = useState(
-        localStorage.getItem('loginData')
-        ? JSON.parse(localStorage.getItem('loginData'))
-        : null
-      );
-    
+      let navigate = useNavigate();
+
       const handleFailure = (result) => {
         alert(result);
       };
@@ -20,31 +17,22 @@ const GoogleLoginBtn = () => {
         console.log(res);
     
         //res.data should include all the user account information. Currently iy only has user email. It will include more user information such as jar collection when MongoDB is implemented
-        setLoginData(res.data);
+        
         localStorage.setItem('loginData', JSON.stringify(res.data));
+        navigate("/jar-collections");
       };
-    
-      const handleLogout = () => {
-        localStorage.removeItem('loginData');
-        setLoginData(null);
-      };
+
   return (
     <div>
     {
-        loginData ? (
-          <div>
-            <h3>You logged in as {loginData.email}</h3>
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-        ) : (
-          <GoogleLogin
+          <GoogleLogin 
+            to='/jar-collections'
             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
             buttonText="Login or signup with Google"
             onSuccess={handleLogin}
             onFailure={handleFailure}
             cookiePolicy={'single_host_origin'}
           ></GoogleLogin>
-        )
       }
     </div>
   )
