@@ -11,6 +11,8 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
 
 public class EjarInterface {
     private MongoDatabase ejarDB;
@@ -24,6 +26,9 @@ public class EjarInterface {
         try {
             // Connect to DB
             ejarDB = databaseManager.getDatabase();
+            usersCollection = ejarDB.getCollection("Users");
+            ejarCollection = ejarDB.getCollection("Jars");
+            contentsCollection = ejarDB.getCollection("Contents");
         } catch (Exception e) {
             e.printStackTrace();
             throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to connect to database.").build());
@@ -32,7 +37,6 @@ public class EjarInterface {
 
     // ----------------------------------------------------------- Test case ------------------------------------------------------//
     public ArrayList<Document> getAllUsers() {
-        usersCollection = ejarDB.getCollection("Users");
         MongoCursor<Document> query = usersCollection.find().iterator();
         ArrayList<Document> ejarUsers = new ArrayList<>();
         while (query.hasNext()) {
@@ -44,10 +48,10 @@ public class EjarInterface {
 
 
     
-    // ------------------------------------------------------------- In progress codes ------------------------------------------------//
+    // ------------------------------------------------------------------- General Stuff ------------------------------------------------------//
 
     // Returns an arraylist of the search result with the given collection.
-    private ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key, String value) {
+    public ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key, String value) {
         ArrayList<Document> documents = new ArrayList<>();
         MongoCursor<Document> query = collection.find(new Document(key, value)).iterator();
         while (query.hasNext()) {
@@ -56,16 +60,30 @@ public class EjarInterface {
         return documents;
     }
 
+    // Same as above method but takes in one more pair of filters
+    public ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key1, String value1, String key2, String value2) {
+        ArrayList<Document> documents = new ArrayList<>();
+        Document filter = new Document(key1, value1).append(key2, value2);
+        MongoCursor<Document> query = collection.find(filter).iterator();
+        while (query.hasNext()) {
+            documents.add(query.next());
+        }
+        return documents;
+    }
+
+    public String getObjectId(Document object) { return object.get("_id").toString();}
+
+
+    // -------------------------------------------------------------- User Object Operations ------------------------------------------------//
     // Get an user from the database, if none exist a new user will be created.
     // This user's jars are also included in the document
     public Document getUser(String email, String givenName, String familyName) {
-        usersCollection = ejarDB.getCollection("Users");
         Document user = usersCollection.find(new Document("email", email)).first();
         
         if (user == null) {
             user = new Document("email", email).append("given_name", givenName).append("family_name", familyName);
+            usersCollection.insertOne(user);
         } else {
-            ejarCollection = ejarDB.getCollection("Jars");
             ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
             user.append("jars_owned", userJars);
             ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
@@ -74,4 +92,45 @@ public class EjarInterface {
 
         return user;
     }
+
+    // Delete an user and all of it's owned jars, doubt it will ever be used...
+    public void deleteUser(String email) {
+        usersCollection.deleteOne(new Document("email", email));
+        ejarCollection.deleteMany(new Document("owner_email", email));
+    }
+
+
+    // ------------------------------------------------------ EJar Object Operations -------------------------------------------//
+    // Create an jar with owner being the email given, no contents and no contributors, duplicate names are allowed.
+    public ArrayList<Document> createJar(String email, String jarName) {
+        Document jar = new Document("owner_email", email)
+                        .append("contributors", new ArrayList<Document>())
+                        .append("name", jarName)
+                        .append("opening_Time", 0);
+        ejarCollection.insertOne(jar);
+        return getDocuments(ejarCollection, "owner_email", email);
+    }
+
+    // Return an arraylist of all the contents associated with this jar
+    public ArrayList<Document> readJar(String jarID) {return getDocuments(contentsCollection, "jar_id", jarID);}
+
+    // Or an arraylist of the contents associated with a specific user
+    public ArrayList<Document> readJar(String jarID, String ownerEmail) {
+        return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+    }
+
+    // Update jar attributes only, nothing to do with the contents associated with it.
+    // public ArrayList<Document> updateJar
+
+
+    // Delete an jar by it's unique id, and all the contents associated with it as well.
+    public void deleteJar(String jarID) {
+        ObjectId idObject = new ObjectId(jarID);
+        ejarCollection.deleteOne(new Document("_id", idObject));
+        contentsCollection.deleteMany(new Document("jar_id", jarID));
+    }
+
+    // ----------------------------------------------------- Content Object Operations -----------------------------------------//
+    // Create an content object that associates with the jar id, it's owner's email, and timestamp it.
+    
 }

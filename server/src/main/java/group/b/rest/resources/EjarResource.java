@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import org.bson.Document;
 
 import group.b.rest.database.EjarInterface;
+import lombok.Getter;
 
 @Path("ejar")
 public class EjarResource{
@@ -51,5 +52,24 @@ public class EjarResource{
         return Response.status(Response.Status.OK).entity(user).build();
     }
 
+    @GET
+    @Path("/createJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createJar() {
+        EjarInterface ejarInterface = new EjarInterface();
+        ejarInterface.createJar("kfeng2@oswego.edu", "TEMPJAR1");
+        Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
+        return Response.status(Response.Status.OK).entity(user).build();
+    }
+
+    @GET
+    @Path("/deleteJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteJar() {
+        EjarInterface ejarInterface = new EjarInterface();
+        ejarInterface.deleteJar("6251fa281b063064fdba6597");
+        Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
+        return Response.status(Response.Status.OK).entity(user).build();
+    }
 }
 
