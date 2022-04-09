@@ -1,5 +1,6 @@
 package group.b.rest.resources;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -70,6 +71,15 @@ public class EjarResource{
         ejarInterface.deleteJar("6251fa281b063064fdba6597");
         Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
         return Response.status(Response.Status.OK).entity(user).build();
+    }
+
+    @GET
+    @Path("/createContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createContent() {
+        EjarInterface ejarInterface = new EjarInterface();
+        ArrayList<Document> contents = ejarInterface.createContent("6250c6a3e09cd95052fb420b", "kfeng2@oswego.edu", "Temp Content");
+        return Response.status(Response.Status.OK).entity(contents).build();
     }
 }
 

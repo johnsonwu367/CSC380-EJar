@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -94,9 +95,11 @@ public class EjarInterface {
     }
 
     // Delete an user and all of it's owned jars, doubt it will ever be used...
-    public void deleteUser(String email) {
+    public boolean deleteUser(String email) {
         usersCollection.deleteOne(new Document("email", email));
         ejarCollection.deleteMany(new Document("owner_email", email));
+        DeleteResult result = contentsCollection.deleteMany(new Document("owner_email", email));
+        return result.wasAcknowledged();
     }
 
 
@@ -124,13 +127,30 @@ public class EjarInterface {
 
 
     // Delete an jar by it's unique id, and all the contents associated with it as well.
-    public void deleteJar(String jarID) {
+    public boolean deleteJar(String jarID) {
         ObjectId idObject = new ObjectId(jarID);
         ejarCollection.deleteOne(new Document("_id", idObject));
-        contentsCollection.deleteMany(new Document("jar_id", jarID));
+        DeleteResult result = contentsCollection.deleteMany(new Document("jar_id", jarID));
+        return result.wasAcknowledged();
     }
 
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
     // Create an content object that associates with the jar id, it's owner's email, and timestamp it.
-    
+    public ArrayList<Document> createContent(String jarID, String ownerEmail, String message) {
+        java.util.Date date = new java.util.Date();
+        Document content = new Document("jar_id", jarID)
+                            .append("owner_email", ownerEmail)
+                            .append("message", message)
+                            .append("created", date);
+        contentsCollection.insertOne(content);
+        return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+    }
+
+    // Create content with the given id.
+    public boolean deleteContent(String contentID) {
+        ObjectId idObject = new ObjectId(contentID);
+        contentsCollection.deleteOne(new Document("_id", idObject));
+        DeleteResult result = contentsCollection.deleteOne(new Document("jar_id", contentID));
+        return result.wasAcknowledged();
+    }
 }
