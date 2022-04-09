@@ -43,5 +43,13 @@ public class EjarResource{
         return Response.status(Response.Status.OK).entity(allUsers).build();
     }
 
+    @GET
+    @Path("/getUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser() {
+        Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
+        return Response.status(Response.Status.OK).entity(user).build();
+    }
+
 }
 
