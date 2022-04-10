@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
+import org.json.JSONObject;
 
 import group.b.rest.database.EjarInterface;
 import lombok.Getter;
@@ -54,5 +55,31 @@ public class EjarResource{
         ArrayList<Document> allContent = database.getAllContent();
         return Response.status(Response.Status.OK).entity(allContent).build();
     }
+
+    @POST
+    @Path("/getUserInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(String info) {
+        JSONObject userInfo = new JSONObject(info);
+        String userEmail = userInfo.getString("email");
+        String givenName = userInfo.getString("givenName");
+        String familyName = userInfo.getString("familyName");
+        // System.out.println(userEmail);
+        // System.out.println(givenName);
+        // System.out.println(familyName);
+        Document user = new EjarInterface().getUser(userEmail, givenName, familyName);
+        // System.out.println(user);
+        return Response.status(Response.Status.OK).entity(user).build();
+    }
+
+    @POST
+    @Path("/createJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserJars(String email, String name) {
+        EjarInterface cj = new EjarInterface();
+        cj.createJar(email, name);
+        return Response.status(Response.Status.OK).entity("jar creation success").build();
+    }
+    
 }
 
