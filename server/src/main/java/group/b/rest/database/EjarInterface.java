@@ -70,13 +70,6 @@ public class EjarInterface {
         return contents;
     }
 
-    // Return an arraylist containing all the jars that this user owns and contributes too.
-    public ArrayList<Document> getUserJars(String email) {
-        ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
-        ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
-        userJars.addAll(contributingJars);
-        return userJars;
-    }
 
     
     // ------------------------------------------------------------------- General Stuff ------------------------------------------------------//
@@ -122,6 +115,18 @@ public class EjarInterface {
         }
 
         return user;
+    }
+
+    // Return an arraylist containing all the jars that this user owns and contributes too.
+    public ArrayList<Document> getUserJars(String email) {
+        ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
+        ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
+        userJars.addAll(contributingJars);
+        
+        for (Document jar : userJars) {
+            jar.append("id_String", jar.get("_id").toString());
+        }
+        return userJars;
     }
 
     // Delete an user and all of it's owned jars, doubt it will ever be used...
