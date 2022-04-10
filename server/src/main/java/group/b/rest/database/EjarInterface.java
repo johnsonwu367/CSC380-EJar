@@ -39,7 +39,7 @@ public class EjarInterface {
         }
     }
 
-    // ----------------------------------------------------------- For development purposese ------------------------------------------------------//
+    // ----------------------------------------------------------- For development purposese? ------------------------------------------------------//
     public ArrayList<Document> getAllUsers() {
         MongoCursor<Document> query = usersCollection.find().iterator();
         ArrayList<Document> ejarUsers = new ArrayList<>();
@@ -70,6 +70,13 @@ public class EjarInterface {
         return contents;
     }
 
+    // Return an arraylist containing all the jars that this user owns and contributes too.
+    public ArrayList<Document> getUserJars(String email) {
+        ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
+        ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
+        userJars.addAll(contributingJars);
+        return userJars;
+    }
 
     
     // ------------------------------------------------------------------- General Stuff ------------------------------------------------------//
@@ -128,10 +135,11 @@ public class EjarInterface {
 
     // ------------------------------------------------------ EJar Object Operations -------------------------------------------//
     // Create an jar with owner being the email given, no contents and no contributors, duplicate names are allowed.
-    public void createJar(String email, String jarName) {
+    public void createJar(String email, String jarName, String tag) {
         Document jar = new Document("owner_email", email)
                         .append("contributors", new ArrayList<Document>())
                         .append("name", jarName)
+                        .append("tag", tag)
                         .append("opening_Time", 0);
         ejarCollection.insertOne(jar);
     }
