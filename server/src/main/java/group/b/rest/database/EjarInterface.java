@@ -9,8 +9,10 @@ import javax.ws.rs.core.Response;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import static com.mongodb.client.model.Filters.eq;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -168,11 +170,9 @@ public class EjarInterface {
     // No need for read content, since all the content informations are retrived by readJar()
 
     // Saves the content into the database, if one exist it will be overwritten, return an arraylist of contents in that jar.
-    public boolean updateContent(String contentID, Document content) {
+    public boolean updateContent(String contentID, String newMessage) {
         ObjectId objectID = new ObjectId(contentID);
-        Document filter = new Document("_id", objectID);
-        Document update = new Document("message", content.get("message"));
-        UpdateResult result = contentsCollection.updateOne(filter, update);
+        UpdateResult result = contentsCollection.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
         return result.wasAcknowledged();
     }
 

@@ -45,11 +45,14 @@ public class EjarResource{
         return Response.status(Response.Status.OK).entity(allUsers).build();
     }
 
-    // @GET
-    // @Path("/test")
-    // @Produces(MediaType.APPLICATION_JSON)
-    // public Response test() {
-        // I tryout my stuff here
-    // }
+    @GET
+    @Path("/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response test() {
+        EjarInterface database = new EjarInterface();
+        database.updateContent("6252025ade0b77361f3b473b", "New message");
+        ArrayList<Document> allContent = database.getAllContent();
+        return Response.status(Response.Status.OK).entity(allContent).build();
+    }
 }
 
