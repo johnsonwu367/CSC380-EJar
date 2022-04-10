@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
 import {JarsContainer, JarItems, JarsH3, JarHeading, JarsP, JarUl} from './JarsElements'
 import {JarCard, JarBtn, JarLi, JarBr, JarImg, JarInfo, JarName, JarTags} from './JarsElements'
 import pic from "./eJar.jpg";
@@ -10,20 +9,16 @@ import Jars from "./Jars";
 import Popup from "./Popup";
 import CreateJarForm from "./CreateJarForm";
 import GoogleLogin from 'react-google-login';
-
+import Sidebar from '../Sidebar';
+import "./JarsPage.css"
+import Modal from '../Modal';
 
 //parameters
 //, jar, jarData
 const JarsPage = () => {
-    let navigate = useNavigate();
-    const loginData = JSON.parse(localStorage.getItem('loginData'))
-    
+    const loginData = JSON.parse(localStorage.getItem('loginData'));
+    // console.log(loginData.jars_owned[0].name)
     const [buttonPopup, setButtonPopup] = useState(false);
-
-    const handleLogout = () => {
-        localStorage.removeItem('loginData');
-        navigate("/");
-      };
 
     // if (jarData.length > 0)
     //     return (
@@ -31,10 +26,9 @@ const JarsPage = () => {
     //     );
     return (
         <>
-            <div>
-                <h3>You logged in as {loginData.email}</h3>
-                <button onClick={handleLogout}>Logout</button>
-            </div>
+            <Sidebar/>
+            <h3>You logged in as {loginData.email}</h3>
+            <div className='Jar-display'>
             <JarInfo>
                 <JarHeading>No jars currently present, would you like to create a new eJar?</JarHeading>
                 <JarBtn onClick={() => setButtonPopup(true)}>Create eJar</JarBtn>
@@ -42,6 +36,7 @@ const JarsPage = () => {
             <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                 <CreateJarForm/>
             </Popup>
+            </div>
         </>
     );
 };

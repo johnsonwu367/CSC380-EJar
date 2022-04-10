@@ -75,9 +75,13 @@ public class EjarResource{
     @POST
     @Path("/createJar")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserJars(String email, String name) {
+    public Response getUserJars(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String email = jarInfo.getString("email");
+        String name = jarInfo.getString("name");
+        String tag = jarInfo.getString("tag");
         EjarInterface cj = new EjarInterface();
-        cj.createJar(email, name);
+        cj.createJar(email, name, tag);
         return Response.status(Response.Status.OK).entity("jar creation success").build();
     }
     
