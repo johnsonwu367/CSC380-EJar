@@ -45,41 +45,11 @@ public class EjarResource{
         return Response.status(Response.Status.OK).entity(allUsers).build();
     }
 
-    @GET
-    @Path("/getUser")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser() {
-        Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
-        return Response.status(Response.Status.OK).entity(user).build();
-    }
-
-    @GET
-    @Path("/createJar")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createJar() {
-        EjarInterface ejarInterface = new EjarInterface();
-        ejarInterface.createJar("kfeng2@oswego.edu", "TEMPJAR1");
-        Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
-        return Response.status(Response.Status.OK).entity(user).build();
-    }
-
-    @GET
-    @Path("/deleteJar")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteJar() {
-        EjarInterface ejarInterface = new EjarInterface();
-        ejarInterface.deleteJar("6251fa281b063064fdba6597");
-        Document user = new EjarInterface().getUser("kfeng2@oswego.edu", "Kevin", "Feng");
-        return Response.status(Response.Status.OK).entity(user).build();
-    }
-
-    @GET
-    @Path("/createContent")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createContent() {
-        EjarInterface ejarInterface = new EjarInterface();
-        ArrayList<Document> contents = ejarInterface.createContent("6250c6a3e09cd95052fb420b", "kfeng2@oswego.edu", "Temp Content");
-        return Response.status(Response.Status.OK).entity(contents).build();
-    }
+    // @GET
+    // @Path("/test")
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public Response test() {
+        // I tryout my stuff here
+    // }
 }
 

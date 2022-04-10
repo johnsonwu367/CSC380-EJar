@@ -10,6 +10,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -36,7 +37,7 @@ public class EjarInterface {
         }
     }
 
-    // ----------------------------------------------------------- Test case ------------------------------------------------------//
+    // ----------------------------------------------------------- For development purposese ------------------------------------------------------//
     public ArrayList<Document> getAllUsers() {
         MongoCursor<Document> query = usersCollection.find().iterator();
         ArrayList<Document> ejarUsers = new ArrayList<>();
@@ -47,12 +48,32 @@ public class EjarInterface {
         return ejarUsers;
     }
 
+    public ArrayList<Document> getAllJars() {
+        MongoCursor<Document> query = ejarCollection.find().iterator();
+        ArrayList<Document> ejars = new ArrayList<>();
+        while (query.hasNext()) {
+            Document document = query.next();
+            ejars.add(document);
+        }
+        return ejars;
+    }
+
+    public ArrayList<Document> getAllContent() {
+        MongoCursor<Document> query = contentsCollection.find().iterator();
+        ArrayList<Document> contents = new ArrayList<>();
+        while (query.hasNext()) {
+            Document document = query.next();
+            contents.add(document);
+        }
+        return contents;
+    }
+
 
     
     // ------------------------------------------------------------------- General Stuff ------------------------------------------------------//
 
     // Returns an arraylist of the search result with the given collection.
-    public ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key, String value) {
+    private ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key, String value) {
         ArrayList<Document> documents = new ArrayList<>();
         MongoCursor<Document> query = collection.find(new Document(key, value)).iterator();
         while (query.hasNext()) {
@@ -62,7 +83,7 @@ public class EjarInterface {
     }
 
     // Same as above method but takes in one more pair of filters
-    public ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key1, String value1, String key2, String value2) {
+    private ArrayList<Document> getDocuments(MongoCollection<Document> collection, String key1, String value1, String key2, String value2) {
         ArrayList<Document> documents = new ArrayList<>();
         Document filter = new Document(key1, value1).append(key2, value2);
         MongoCursor<Document> query = collection.find(filter).iterator();
@@ -105,13 +126,12 @@ public class EjarInterface {
 
     // ------------------------------------------------------ EJar Object Operations -------------------------------------------//
     // Create an jar with owner being the email given, no contents and no contributors, duplicate names are allowed.
-    public ArrayList<Document> createJar(String email, String jarName) {
+    public void createJar(String email, String jarName) {
         Document jar = new Document("owner_email", email)
                         .append("contributors", new ArrayList<Document>())
                         .append("name", jarName)
                         .append("opening_Time", 0);
         ejarCollection.insertOne(jar);
-        return getDocuments(ejarCollection, "owner_email", email);
     }
 
     // Return an arraylist of all the contents associated with this jar
@@ -136,14 +156,24 @@ public class EjarInterface {
 
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
     // Create an content object that associates with the jar id, it's owner's email, and timestamp it.
-    public ArrayList<Document> createContent(String jarID, String ownerEmail, String message) {
+    public void createContent(String jarID, String ownerEmail, String message) {
         java.util.Date date = new java.util.Date();
         Document content = new Document("jar_id", jarID)
                             .append("owner_email", ownerEmail)
                             .append("message", message)
                             .append("created", date);
         contentsCollection.insertOne(content);
-        return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+    }
+
+    // No need for read content, since all the content informations are retrived by readJar()
+
+    // Saves the content into the database, if one exist it will be overwritten, return an arraylist of contents in that jar.
+    public boolean updateContent(String contentID, Document content) {
+        ObjectId objectID = new ObjectId(contentID);
+        Document filter = new Document("_id", objectID);
+        Document update = new Document("message", content.get("message"));
+        UpdateResult result = contentsCollection.updateOne(filter, update);
+        return result.wasAcknowledged();
     }
 
     // Create content with the given id.
