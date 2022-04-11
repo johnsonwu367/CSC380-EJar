@@ -1,7 +1,6 @@
 package group.b.rest.database;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -9,6 +8,7 @@ import javax.ws.rs.core.Response;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.FindOneAndDeleteOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -157,16 +157,23 @@ public class EjarInterface {
         return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
     }
 
-    // Update jar attributes only, nothing to do with the contents associated with it.
-    // public ArrayList<Document> updateJar
+    // Various Update Jar Stuff
+    public void addContributor(String jarID, String contributorEmail) {
+        ObjectId idObject = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", idObject), Updates.addToSet("contributors", contributorEmail));
+    }
+
+    public void removeContributor(String jarID, String contributorEmail) {
+        ObjectId idObject = new ObjectId(jarID);
+        ejarCollection.updateOne(eq("_id", idObject), Updates.pull("contributors", contributorEmail));
+    }
 
 
     // Delete an jar by it's unique id, and all the contents associated with it as well.
-    public boolean deleteJar(String jarID) {
+    public void deleteJar(String jarID) {
         ObjectId idObject = new ObjectId(jarID);
         ejarCollection.deleteOne(new Document("_id", idObject));
-        DeleteResult result = contentsCollection.deleteMany(new Document("jar_id", jarID));
-        return result.wasAcknowledged();
+        contentsCollection.deleteMany(new Document("jar_id", jarID));
     }
 
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
