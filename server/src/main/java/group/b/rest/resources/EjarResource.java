@@ -14,7 +14,6 @@ import org.bson.Document;
 import org.json.JSONObject;
 
 import group.b.rest.database.EjarInterface;
-import lombok.Getter;
 
 @Path("ejar")
 public class EjarResource{
@@ -124,5 +123,17 @@ public class EjarResource{
         return Response.status(Response.Status.OK).entity(jarContents).build();
     }
     
+    @POST
+    @Path("/addContributor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addContributor(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarId = jarInfo.getString("jarId");
+        String contributorEmail = jarInfo.getString("email");
+        EjarInterface ac = new EjarInterface();
+        ac.addContributor(jarId, contributorEmail);
+        return Response.status(Response.Status.OK).entity("adding contributor success").build();
+    }
+
 }
 
