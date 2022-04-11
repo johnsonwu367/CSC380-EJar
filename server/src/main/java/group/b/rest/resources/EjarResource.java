@@ -73,6 +73,15 @@ public class EjarResource{
     }
 
     @POST
+    @Path("/getJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJars(String email) {
+        // System.out.println(email);
+        ArrayList <Document> jars = new EjarInterface().getUserJars(email);
+        return Response.status(Response.Status.OK).entity(jars).build();
+    }
+
+    @POST
     @Path("/createJar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserJars(String info) {
@@ -83,6 +92,36 @@ public class EjarResource{
         EjarInterface cj = new EjarInterface();
         cj.createJar(email, name, tag);
         return Response.status(Response.Status.OK).entity("jar creation success").build();
+    }
+
+    @POST
+    @Path("/deleteJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteJar(String jarId) {
+        EjarInterface cj = new EjarInterface();
+        cj.deleteJar(jarId);
+        return Response.status(Response.Status.OK).entity("jar deletion success").build();
+    }
+
+    @POST
+    @Path("/addJarContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addJarContent(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarId = jarInfo.getString("jarId");
+        String email = jarInfo.getString("email");
+        String message = jarInfo.getString("message");
+        EjarInterface cc = new EjarInterface();
+        cc.createContent(jarId, email, message);
+        return Response.status(Response.Status.OK).entity("adding jar content success").build();
+    }
+
+    @POST
+    @Path("/getJarContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJarContent(String jarId) {
+        ArrayList<Document> jarContents = new EjarInterface().readJar(jarId);
+        return Response.status(Response.Status.OK).entity(jarContents).build();
     }
     
 }

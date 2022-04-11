@@ -9,8 +9,8 @@
     <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
     
     
-    <variable name="default.http.port" defaultValue="9087"/>
-    <variable name="default.https.port" defaultValue="9487"/>
+    <variable name="default.http.port" defaultValue="9088"/>
+    <variable name="default.https.port" defaultValue="9488"/>
     <variable name="app.context.root" defaultValue="/"/>
 
     <httpEndpoint id="defaultHttpEndpoint"

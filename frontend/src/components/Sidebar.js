@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import "./Sidebar.css"
-// import { SidebarData } from './SidebarData'
 import { IoMdAdd } from 'react-icons/io'
 import { CgLogOut } from 'react-icons/cg';
 import { useNavigate } from "react-router-dom";

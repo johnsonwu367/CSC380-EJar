@@ -24,15 +24,16 @@ import styled from 'styled-components';
 // const grid = document.querySelector('JarCard')
 
 export const JarsContainer = styled.div`
-  background: "grey",
-  height: "800px",
-  width: "100%"
+  background: "grey";
+  height: "800px";
+  width: "auto";
   display: flex;
   flex-flow: column;
   align-items: center;
-  max-width: 1120px;
-  width: 90%;
+  /* max-width: 1120px; */
+  /* width: 90%; */
   margin: 0 auto;
+  overflow: auto;
 // height: calc(100vh -80px);
 // max-height: 100%;
 // width: 100vw;
@@ -45,7 +46,7 @@ export const JarItems = styled.div`
     justify-content: center;
     align-items: flex-start;
     height: 100vh;
-    max-height: 100%
+    max-height: 100%;
     padding: 0 2rem;
     width: 650 px;
     text-transform: uppercase;
@@ -93,7 +94,7 @@ export const JarImg = styled.img`
   max-width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
   bottom: 0;
   left: 0;
 `;
@@ -113,7 +114,9 @@ export const JarName = styled.h2`
 `;
 
 export const JarLi = styled.li`
+  display: flex;
   float: left;
+  flex: 1;
   // width: 10em;
   
 `;

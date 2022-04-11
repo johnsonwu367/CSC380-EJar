@@ -3,7 +3,7 @@ import {JarsContainer, JarItems, JarsH3, JarHeading, JarsP, JarUl} from './JarsE
 import {JarCard, JarBtn, JarLi, JarBr, JarImg, JarInfo, JarName, JarTags} from './JarsElements'
 import pic from "./eJar.jpg";
 import Jar from "./Jar";
-import {jarData} from "./data";
+// import {jarData} from "./data";
 import CreateJar from "./CreateJar"
 import Jars from "./Jars";
 import Popup from "./Popup";
@@ -17,13 +17,17 @@ import Modal from '../Modal';
 //, jar, jarData
 const JarsPage = () => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
+    const jarData = JSON.parse(localStorage.getItem('jars'))
     // console.log(loginData.jars_owned[0].name)
     const [buttonPopup, setButtonPopup] = useState(false);
 
-    // if (jarData.length > 0)
-    //     return (
-    //         <Jars/>
-    //     );
+    if (jarData.length > 0)
+        return (
+            <>
+            <Sidebar/>
+            <Jars/>
+            </>
+        );
     return (
         <>
             <Sidebar/>
