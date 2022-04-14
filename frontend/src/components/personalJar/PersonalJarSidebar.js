@@ -6,6 +6,7 @@ import { MdDeleteForever } from 'react-icons/md'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import AddContentModal from './AddContentModal'
+import AddContributorModal from './AddContributorModal'
 
 
 const PersonalJarSidebar = () => {
@@ -23,6 +24,7 @@ const PersonalJarSidebar = () => {
     }
 
     const [openAddContentModal, setAddContentModal] = useState(false);
+    const [openAddContributorModal, setAddContributorModal] = useState(false);
 
     const editJarContent = async () => {
         const res = await axios.post("http://localhost:9088/ejar/getJarContent", currJarInfo.id);
@@ -48,7 +50,7 @@ const PersonalJarSidebar = () => {
             <div id="icon"><MdDeleteForever/></div> 
             <div id="title">Delete Jar Content</div>
         </li>
-        <li className="row"> 
+        <li className="row" onClick={() => {setAddContributorModal(true)}}> 
             <div id="icon"><IoMdPersonAdd/></div> 
             <div id="title">Add Contributor</div>
         </li>
@@ -58,6 +60,7 @@ const PersonalJarSidebar = () => {
         </li>
       </ul>
       {openAddContentModal && <AddContentModal closeModal={setAddContentModal}/>}
+      {openAddContributorModal && <AddContributorModal closeModal={setAddContributorModal}/>}
     </div>
   )
 }
