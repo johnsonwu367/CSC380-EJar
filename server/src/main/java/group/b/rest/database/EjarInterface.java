@@ -107,25 +107,38 @@ public class EjarInterface {
         if (user == null) {
             user = new Document("email", email).append("given_name", givenName).append("family_name", familyName);
             usersCollection.insertOne(user);
-        } else {
-            ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
-            user.append("jars_owned", userJars);
-            ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
-            user.append("jars_contributing", contributingJars);
         }
 
         return user;
     }
 
-    // Return an arraylist containing all the jars that this user owns and contributes too.
+    // Return an arraylist containing all the jars that this user owns and contributes to.
     public ArrayList<Document> getUserJars(String email) {
-        ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
-        ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
-        userJars.addAll(contributingJars);
-        
-        for (Document jar : userJars) {
-            jar.append("id_String", jar.get("_id").toString());
+        Document document = new Document();
+        ArrayList<Document> userJars = new ArrayList<>();
+
+        // Find all the jars this user owned
+        MongoCursor<Document> query = ejarCollection.find(eq("owner_email", email)).iterator();
+        while (query.hasNext()) {
+            document = query.next();
+            if (document.getList("contributors", String.class).size() > 0) {
+                document.append("type", "shared");
+            } else {
+                document.append("type", "private");
+            }
+            document.append("id_String", document.get("_id").toString());
+            userJars.add(document);
         }
+
+        // Find all the jars this user is contributing to
+        query = ejarCollection.find(eq("contributors", email)).iterator();
+        while (query.hasNext()) {
+            document = query.next();
+            document.append("type", "contributing");
+            document.append("id_String", document.get("_id").toString());
+            userJars.add(document);
+        }
+
         return userJars;
     }
 
