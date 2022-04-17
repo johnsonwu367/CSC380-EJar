@@ -1,6 +1,11 @@
 package group.b.rest.database;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -97,6 +102,30 @@ public class EjarInterface {
 
     public String getObjectId(Document object) { return object.get("_id").toString();}
 
+    public String getOpeningStatus(Document jar) {
+        String openString = jar.get("opening_Time").toString();
+        if (openString.equals("0")) {
+            return "notSet";
+        } else {
+            try {
+                Calendar now = Calendar.getInstance();
+                Calendar openTime = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                openTime.setTime(sdf.parse(openString));
+
+                int result = now.compareTo(openTime);
+                if (result <= 0) {
+                    return "notOpenable";
+                } else {
+                    return "openable";
+                }
+            } catch (ParseException exception) {
+                System.out.println("Whoops, error while parsing jar opening times...");
+                return "notSet";
+            }
+        }
+    }
+
 
     // -------------------------------------------------------------- User Object Operations ------------------------------------------------//
     // Get an user from the database, if none exist a new user will be created.
@@ -127,6 +156,7 @@ public class EjarInterface {
                 document.append("type", "private");
             }
             document.append("id_String", document.get("_id").toString());
+            document.append("status", getOpeningStatus(document));
             userJars.add(document);
         }
 
@@ -136,6 +166,7 @@ public class EjarInterface {
             document = query.next();
             document.append("type", "contributing");
             document.append("id_String", document.get("_id").toString());
+            document.append("status", getOpeningStatus(document));
             userJars.add(document);
         }
 
@@ -170,7 +201,7 @@ public class EjarInterface {
         return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
     }
 
-    // Various Update Jar Stuff
+    // --------------- Various Update Jar Stuff------------------- //
     public void addContributor(String jarID, String contributorEmail) {
         ObjectId idObject = new ObjectId(jarID);
         ejarCollection.findOneAndUpdate(eq("_id", idObject), Updates.addToSet("contributors", contributorEmail));
@@ -178,21 +209,37 @@ public class EjarInterface {
 
     public void removeContributor(String jarID, String contributorEmail) {
         ObjectId idObject = new ObjectId(jarID);
-        ejarCollection.updateOne(eq("_id", idObject), Updates.pull("contributors", contributorEmail));
+        ejarCollection.findOneAndUpdate(eq("_id", idObject), Updates.pull("contributors", contributorEmail));
     }
 
+    // Assign opening time ralative to current time
+    public void setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minutesFromNow);
+        calendar.add(Calendar.HOUR, hoursFromNow);
+        calendar.add(Calendar.DATE, daysFromNow);
+        ObjectId objectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", calendar.getTime()));
+    }
+
+    public void clearOpeningTime(String jarID) {
+        ObjectId objectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", 0));
+    }
+    // --------------- End of Update Jar Stuff --------------------//
 
     // Delete an jar by it's unique id, and all the contents associated with it as well.
     public void deleteJar(String jarID) {
         ObjectId idObject = new ObjectId(jarID);
-        ejarCollection.deleteOne(new Document("_id", idObject));
-        contentsCollection.deleteMany(new Document("jar_id", jarID));
+        ejarCollection.deleteOne(eq("_id", idObject));
+        contentsCollection.deleteMany(eq("jar_id", jarID));
     }
 
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
     // Create an content object that associates with the jar id, it's owner's email, and timestamp it.
     public void createContent(String jarID, String ownerEmail, String message) {
-        java.util.Date date = new java.util.Date();
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
         Document content = new Document("jar_id", jarID)
                             .append("owner_email", ownerEmail)
                             .append("message", message)
@@ -203,17 +250,14 @@ public class EjarInterface {
     // No need for read content, since all the content informations are retrived by readJar()
 
     // Saves the content into the database, if one exist it will be overwritten, return an arraylist of contents in that jar.
-    public boolean updateContent(String contentID, String newMessage) {
+    public void updateContent(String contentID, String newMessage) {
         ObjectId objectID = new ObjectId(contentID);
-        UpdateResult result = contentsCollection.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
-        return result.wasAcknowledged();
+        contentsCollection.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
     }
 
-    // Create content with the given id.
-    public boolean deleteContent(String contentID) {
-        ObjectId idObject = new ObjectId(contentID);
-        contentsCollection.deleteOne(new Document("_id", idObject));
-        DeleteResult result = contentsCollection.deleteOne(new Document("jar_id", contentID));
-        return result.wasAcknowledged();
+    // Delete content with the given id.
+    public void deleteContent(String contentID) {
+        ObjectId objectID = new ObjectId(contentID);
+        contentsCollection.deleteOne(eq("_id", objectID));
     }
 }
