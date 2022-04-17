@@ -195,11 +195,21 @@ public class EjarInterface {
     }
 
     // Return an arraylist of all the contents associated with this jar
-    public ArrayList<Document> readJar(String jarID) {return getDocuments(contentsCollection, "jar_id", jarID);}
+    public ArrayList<Document> readJar(String jarID) {
+        ArrayList<Document> contents = getDocuments(contentsCollection, "jar_id", jarID);
+        for (Document content : contents) {
+            content.append("id_String", content.get("_id").toString());
+        }
+        return contents;
+    }
 
     // Or an arraylist of the contents associated with a specific user
     public ArrayList<Document> readJar(String jarID, String ownerEmail) {
-        return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+        ArrayList<Document> contents = getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+        for (Document content : contents) {
+            content.append("id_String", content.get("_id").toString());
+        }
+        return contents;
     }
 
     // --------------- Various Update Jar Stuff------------------- //
