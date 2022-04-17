@@ -7,7 +7,8 @@ function Modal({ closeModal }) {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
     const [values, setValues] = useState({
         name: '',
-        tag: ''
+        tag: '',
+        type: 'personal'
     });
 
     const handleChange = e => {
@@ -18,12 +19,14 @@ function Modal({ closeModal }) {
         });
     };
 
+    // add jar type here
     const handleSubmit = async (e) => {
         e.preventDefault();
         let data = {
             email: loginData.email,
             name: values.name,
-            tag: values.tag
+            tag: values.tag,
+            type: values.type
         };
         console.log(data);
         closeModal(false)
@@ -53,6 +56,10 @@ function Modal({ closeModal }) {
                     <div>
                         <label htmlFor='tag'>Jar Tag: </label>
                         <input type='text' name='tag' placeholder='Enter a jar tag' value={values.tag} onChange={handleChange}/>
+                    </div>
+                    <div>
+                        <label><input type="radio" name="type" value="personal" onChange={handleChange} checked={values.type==="personal"}/>Personal</label>
+                        <label><input type="radio" name="type" value="shared" onChange={handleChange} checked={values.type==="shared"}/>Shared</label>
                     </div>
                     <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
                     <button className = 'submitBtn' type='submit'>Submit</button>

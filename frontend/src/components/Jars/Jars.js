@@ -5,7 +5,7 @@ import Jar from "./Jar";
 import React from "react";
 import { JarLi } from "./JarElements"
 
-const Jars = ({jars}) => {
+const Jars = () => {
     const jarData = JSON.parse(localStorage.getItem('jars'));
     // console.log(jarData[0])
     // const handleOpenJar = (name, jar) => {
@@ -25,6 +25,7 @@ const Jars = ({jars}) => {
                                     text={jar.name}
                                     label={jar.tag}
                                     id={jar.id_String}
+                                    type={jar.type}
                                     path='/JarPage'/>
                             </JarCard>
                             </JarLi>

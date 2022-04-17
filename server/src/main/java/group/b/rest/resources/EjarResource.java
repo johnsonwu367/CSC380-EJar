@@ -63,11 +63,7 @@ public class EjarResource{
         String userEmail = userInfo.getString("email");
         String givenName = userInfo.getString("givenName");
         String familyName = userInfo.getString("familyName");
-        // System.out.println(userEmail);
-        // System.out.println(givenName);
-        // System.out.println(familyName);
         Document user = new EjarInterface().getUser(userEmail, givenName, familyName);
-        // System.out.println(user);
         return Response.status(Response.Status.OK).entity(user).build();
     }
 
@@ -88,8 +84,9 @@ public class EjarResource{
         String email = jarInfo.getString("email");
         String name = jarInfo.getString("name");
         String tag = jarInfo.getString("tag");
+        String type = jarInfo.getString("type");
         EjarInterface cj = new EjarInterface();
-        cj.createJar(email, name, tag);
+        cj.createJar(email, name, tag, type);
         return Response.status(Response.Status.OK).entity("jar creation success").build();
     }
 

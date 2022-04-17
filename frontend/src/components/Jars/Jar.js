@@ -7,11 +7,21 @@ function Jar(props, jar ) {
     function handleOpenJar(currJar) {
         // console.log(currJar);
         localStorage.setItem('currentJar', JSON.stringify(currJar))
+        if (currJar.type==="personal") {
+            navigate("/personal-jar");
+        } else if (currJar.type==="shared") {
+            navigate("/shared-jar");
+        } else {
+            navigate("/contributing-jar");
+        }
         // console.log(JSON.parse(localStorage.getItem('currentJar')))
-        navigate("/personal-jar");
+
+        // if jar is personal jar navigate to personal jar page
+        
+        // else navigate to owner jar page or collaborator page
     };
     return (   
-        <FigureJarWrap data-category={props.label} onClick={() => {let currJar = {id: props.id, name: props.text}; handleOpenJar(currJar);}}>
+        <FigureJarWrap data-category={props.label} onClick={() => {let currJar = {id: props.id, name: props.text, type: props.type}; handleOpenJar(currJar);}}>
             <DivJarsInfo>
                 <JarsH5>{props.text}</JarsH5>
             </DivJarsInfo>

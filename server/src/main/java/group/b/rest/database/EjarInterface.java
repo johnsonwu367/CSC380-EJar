@@ -150,11 +150,11 @@ public class EjarInterface {
         MongoCursor<Document> query = ejarCollection.find(eq("owner_email", email)).iterator();
         while (query.hasNext()) {
             document = query.next();
-            if (document.getList("contributors", String.class).size() > 0) {
-                document.append("type", "shared");
-            } else {
-                document.append("type", "private");
-            }
+            // if (document.getList("contributors", String.class).size() > 0) {
+            //     document.append("type", "shared");
+            // } else {
+            //     document.append("type", "personal");
+            // }
             document.append("id_String", document.get("_id").toString());
             document.append("status", getOpeningStatus(document));
             userJars.add(document);
@@ -184,11 +184,12 @@ public class EjarInterface {
 
     // ------------------------------------------------------ EJar Object Operations -------------------------------------------//
     // Create an jar with owner being the email given, no contents and no contributors, duplicate names are allowed.
-    public void createJar(String email, String jarName, String tag) {
+    public void createJar(String email, String jarName, String tag, String type) {
         Document jar = new Document("owner_email", email)
                         .append("contributors", new ArrayList<Document>())
                         .append("name", jarName)
                         .append("tag", tag)
+                        .append("type", type)
                         .append("opening_Time", 0);
         ejarCollection.insertOne(jar);
     }

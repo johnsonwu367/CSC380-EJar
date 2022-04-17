@@ -17,7 +17,8 @@ import Modal from '../Modal';
 //, jar, jarData
 const JarsPage = () => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
-    const jarData = JSON.parse(localStorage.getItem('jars'))
+    const jarData = JSON.parse(localStorage.getItem('jars'));
+    // console.log(loginData);
     // console.log(loginData.jars_owned[0].name)
     const [buttonPopup, setButtonPopup] = useState(false);
 
@@ -25,6 +26,8 @@ const JarsPage = () => {
         return (
             <>
             <Sidebar/>
+            <h3>You logged in as {loginData.email}</h3>
+            <h5>Welcome {loginData.given_name}</h5>
             <Jars/>
             </>
         );
@@ -32,10 +35,11 @@ const JarsPage = () => {
         <>
             <Sidebar/>
             <h3>You logged in as {loginData.email}</h3>
+            <h5>Welcome {loginData.given_name}</h5>
             <div className='Jar-display'>
             <JarInfo>
-                <JarHeading>No jars currently present, would you like to create a new eJar?</JarHeading>
-                <JarBtn onClick={() => setButtonPopup(true)}>Create eJar</JarBtn>
+                <JarHeading>You have no jars in your jar collection. Please click "Add Jar" to add a jar to you collection.</JarHeading>
+                {/* <JarBtn onClick={() => setButtonPopup(true)}>Create eJar</JarBtn> */}
             </JarInfo>
             <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                 <CreateJarForm/>
