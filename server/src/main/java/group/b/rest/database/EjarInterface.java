@@ -190,7 +190,8 @@ public class EjarInterface {
                         .append("name", jarName)
                         .append("tag", tag)
                         .append("type", type)
-                        .append("opening_Time", 0);
+                        .append("opening_Time", 0)
+                        .append("opening_Status", false);
         ejarCollection.insertOne(jar);
     }
 
@@ -237,6 +238,16 @@ public class EjarInterface {
         ObjectId objectID = new ObjectId(jarID);
         ejarCollection.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", 0));
     }
+
+    public void openJar(String jarID) {
+        ObjectId ObjectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", ObjectID), Updates.set("opening_Status", true));
+    }
+
+    public void closeJar(String jarID) {
+        ObjectId ObjectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", ObjectID), Updates.set("opening_Status", false));
+    }
     // --------------- End of Update Jar Stuff --------------------//
 
     // Delete an jar by it's unique id, and all the contents associated with it as well.
@@ -246,6 +257,7 @@ public class EjarInterface {
         contentsCollection.deleteMany(eq("jar_id", jarID));
     }
 
+    
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
     // Create an content object that associates with the jar id, it's owner's email, and timestamp it.
     public void createContent(String jarID, String ownerEmail, String message) {
