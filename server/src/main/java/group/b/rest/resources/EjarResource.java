@@ -115,8 +115,11 @@ public class EjarResource{
     @POST
     @Path("/getJarContent")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJarContent(String jarId) {
-        ArrayList<Document> jarContents = new EjarInterface().readJar(jarId);
+    public Response getJarContent(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarId = jarInfo.getString("jarId");
+        String ownerEmail = jarInfo.getString("email");
+        ArrayList<Document> jarContents = new EjarInterface().readJar(jarId, ownerEmail);
         return Response.status(Response.Status.OK).entity(jarContents).build();
     }
     
@@ -130,6 +133,50 @@ public class EjarResource{
         EjarInterface ac = new EjarInterface();
         ac.addContributor(jarId, contributorEmail);
         return Response.status(Response.Status.OK).entity("adding contributor success").build();
+    }
+
+    @POST
+    @Path("/deleteContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteContent(String contentID) {
+        EjarInterface dc = new EjarInterface();
+        dc.deleteContent(contentID);
+        return Response.status(Response.Status.OK).entity("content deletion success").build();
+    }
+
+    @POST
+    @Path("/updateContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateContent(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String contentID = jarInfo.getString("content_id");
+        String newMessage = jarInfo.getString("message");
+        EjarInterface uc = new EjarInterface();
+        uc.updateContent(contentID, newMessage);
+        return Response.status(Response.Status.OK).entity("content update success").build();
+    }
+
+    @POST
+    @Path("/setOpeningTime")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response setOpeningTime(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        // System.out.println(jarInfo);
+        String jarID = jarInfo.getString("jar_id");
+        int daysFromNow = Integer.valueOf(jarInfo.getString("days"));
+        int hoursFromNow = Integer.valueOf(jarInfo.getString("hours"));
+        int minutesFromNow = Integer.valueOf(jarInfo.getString("minutes"));
+        EjarInterface ot = new EjarInterface();
+        ot.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow);
+        return Response.status(Response.Status.OK).entity("opening time set").build();
+    }
+
+    @POST
+    @Path("/openJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response openJar(String jarID) {
+        ArrayList <Document> contents = new EjarInterface().readJar(jarID);
+        return Response.status(Response.Status.OK).entity(contents).build();
     }
 
 }

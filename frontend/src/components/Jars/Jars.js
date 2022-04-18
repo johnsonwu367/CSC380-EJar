@@ -26,6 +26,7 @@ const Jars = () => {
                                     label={jar.tag}
                                     id={jar.id_String}
                                     type={jar.type}
+                                    opening_Time={jar.opening_Time}
                                     path='/JarPage'/>
                             </JarCard>
                             </JarLi>
