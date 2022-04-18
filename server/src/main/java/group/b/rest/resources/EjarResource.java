@@ -14,7 +14,6 @@ import org.bson.Document;
 import org.json.JSONObject;
 
 import group.b.rest.database.EjarInterface;
-import lombok.Getter;
 
 @Path("ejar")
 public class EjarResource{
@@ -64,12 +63,17 @@ public class EjarResource{
         String userEmail = userInfo.getString("email");
         String givenName = userInfo.getString("givenName");
         String familyName = userInfo.getString("familyName");
-        // System.out.println(userEmail);
-        // System.out.println(givenName);
-        // System.out.println(familyName);
         Document user = new EjarInterface().getUser(userEmail, givenName, familyName);
-        // System.out.println(user);
         return Response.status(Response.Status.OK).entity(user).build();
+    }
+
+    @POST
+    @Path("/getJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJars(String email) {
+        // System.out.println(email);
+        ArrayList <Document> jars = new EjarInterface().getUserJars(email);
+        return Response.status(Response.Status.OK).entity(jars).build();
     }
 
     @POST
@@ -80,10 +84,100 @@ public class EjarResource{
         String email = jarInfo.getString("email");
         String name = jarInfo.getString("name");
         String tag = jarInfo.getString("tag");
+        String type = jarInfo.getString("type");
         EjarInterface cj = new EjarInterface();
-        cj.createJar(email, name, tag);
+        cj.createJar(email, name, tag, type);
         return Response.status(Response.Status.OK).entity("jar creation success").build();
     }
+
+    @POST
+    @Path("/deleteJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteJar(String jarId) {
+        EjarInterface cj = new EjarInterface();
+        cj.deleteJar(jarId);
+        return Response.status(Response.Status.OK).entity("jar deletion success").build();
+    }
+
+    @POST
+    @Path("/addJarContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addJarContent(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarId = jarInfo.getString("jarId");
+        String email = jarInfo.getString("email");
+        String message = jarInfo.getString("message");
+        EjarInterface cc = new EjarInterface();
+        cc.createContent(jarId, email, message);
+        return Response.status(Response.Status.OK).entity("adding jar content success").build();
+    }
+
+    @POST
+    @Path("/getJarContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJarContent(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarId = jarInfo.getString("jarId");
+        String ownerEmail = jarInfo.getString("email");
+        ArrayList<Document> jarContents = new EjarInterface().readJar(jarId, ownerEmail);
+        return Response.status(Response.Status.OK).entity(jarContents).build();
+    }
     
+    @POST
+    @Path("/addContributor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addContributor(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarId = jarInfo.getString("jarId");
+        String contributorEmail = jarInfo.getString("email");
+        EjarInterface ac = new EjarInterface();
+        ac.addContributor(jarId, contributorEmail);
+        return Response.status(Response.Status.OK).entity("adding contributor success").build();
+    }
+
+    @POST
+    @Path("/deleteContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteContent(String contentID) {
+        EjarInterface dc = new EjarInterface();
+        dc.deleteContent(contentID);
+        return Response.status(Response.Status.OK).entity("content deletion success").build();
+    }
+
+    @POST
+    @Path("/updateContent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateContent(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String contentID = jarInfo.getString("content_id");
+        String newMessage = jarInfo.getString("message");
+        EjarInterface uc = new EjarInterface();
+        uc.updateContent(contentID, newMessage);
+        return Response.status(Response.Status.OK).entity("content update success").build();
+    }
+
+    @POST
+    @Path("/setOpeningTime")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response setOpeningTime(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        // System.out.println(jarInfo);
+        String jarID = jarInfo.getString("jar_id");
+        int daysFromNow = Integer.valueOf(jarInfo.getString("days"));
+        int hoursFromNow = Integer.valueOf(jarInfo.getString("hours"));
+        int minutesFromNow = Integer.valueOf(jarInfo.getString("minutes"));
+        EjarInterface ot = new EjarInterface();
+        ot.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow);
+        return Response.status(Response.Status.OK).entity("opening time set").build();
+    }
+
+    @POST
+    @Path("/openJar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response openJar(String jarID) {
+        ArrayList <Document> contents = new EjarInterface().readJar(jarID);
+        return Response.status(Response.Status.OK).entity(contents).build();
+    }
+
 }
 

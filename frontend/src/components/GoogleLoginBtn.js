@@ -11,7 +11,7 @@ const GoogleLoginBtn = () => {
       };
     
       const handleLogin = async (googleData) => {
-        const res = await axios.post("http://localhost:9087/ejar/getUserInfo", {
+        const res = await axios.post("http://localhost:9088/ejar/getUserInfo", {
           "email" : googleData.profileObj.email,
           "familyName" : googleData.profileObj.familyName,
           "givenName" : googleData.profileObj.givenName
@@ -19,8 +19,12 @@ const GoogleLoginBtn = () => {
         // console.log(res.data);
     
         //res.data should include all the user account information. Currently iy only has user email. It will include more user information such as jar collection when MongoDB is implemented
-        
         localStorage.setItem('loginData', JSON.stringify(res.data));
+
+        const res2 = await axios.post("http://localhost:9088/ejar/getJar", googleData.profileObj.email);
+        // console.log(res2.data);
+        localStorage.setItem('jars', JSON.stringify(res2.data));
+        // console.log(JSON.parse(localStorage.getItem('jars')));
         navigate("/jar-collections");
       };
 

@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
 import "./Sidebar.css"
-// import { SidebarData } from './SidebarData'
 import { IoMdAdd } from 'react-icons/io'
 import { CgLogOut } from 'react-icons/cg';
-import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
+import LogoutModal from './LogoutModal';
 
 const Sidebar = () => {
-    let navigate = useNavigate();
 
     const [openModal, setOpenModal] = useState(false);
+    const [openLogoutModal, setLogoutModal] = useState(false);
 
-    const handleLogout = () => {
-        localStorage.removeItem('loginData');
-        navigate("/");
-    };
   return (
     <div className='Sidebar'>
         <div className='header'>
@@ -26,12 +21,13 @@ const Sidebar = () => {
             <div id="icon"><IoMdAdd/></div> 
             <div id="title">Add Jar</div>
         </li>
-        <li className="row" onClick={handleLogout}> 
+        <li className="row" onClick={() => {setLogoutModal(true)}}> 
             <div id="icon"><CgLogOut/></div> 
             <div id="title">Logout</div>
         </li>
       </ul>
       {openModal && <Modal closeModal={setOpenModal}/>}
+      {openLogoutModal && <LogoutModal closeModal={setLogoutModal}/>}
     </div>
   )
 }

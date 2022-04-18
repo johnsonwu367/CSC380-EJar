@@ -19,7 +19,7 @@ export const LinkJars = styled( Link )`
 export const FigureJarWrap = styled.figure`
   position: relative;
   width: 75%;
-  height: 75%;
+  height: 90%;
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
@@ -27,6 +27,9 @@ export const FigureJarWrap = styled.figure`
   margin: 25px;
   bottom: 0;
   left: 0;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const ImgJar = styled.img`
@@ -47,16 +50,16 @@ export const ImgJar = styled.img`
    float: left;
    margin-right: 10px;
   
-&:hover {
+/* &:hover {
   cursor: pointer;
-}
+} */
 `;
 
 export const DivJarsInfo = styled.div`
   // padding: 10px 5px 10px;
   // border: 3px solid #000;
   overflow: hidden;
-  width 60px;
+  width: 60px;
   text-align: center;
   width: 200px;
   height: 50px;

@@ -1,7 +1,11 @@
 package group.b.rest.database;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -9,6 +13,7 @@ import javax.ws.rs.core.Response;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.FindOneAndDeleteOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -97,6 +102,30 @@ public class EjarInterface {
 
     public String getObjectId(Document object) { return object.get("_id").toString();}
 
+    public String getOpeningStatus(Document jar) {
+        String openString = jar.get("opening_Time").toString();
+        if (openString.equals("0")) {
+            return "notSet";
+        } else {
+            try {
+                Calendar now = Calendar.getInstance();
+                Calendar openTime = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                openTime.setTime(sdf.parse(openString));
+
+                int result = now.compareTo(openTime);
+                if (result <= 0) {
+                    return "notOpenable";
+                } else {
+                    return "openable";
+                }
+            } catch (ParseException exception) {
+                System.out.println("Whoops, error while parsing jar opening times...");
+                return "notSet";
+            }
+        }
+    }
+
 
     // -------------------------------------------------------------- User Object Operations ------------------------------------------------//
     // Get an user from the database, if none exist a new user will be created.
@@ -107,25 +136,40 @@ public class EjarInterface {
         if (user == null) {
             user = new Document("email", email).append("given_name", givenName).append("family_name", familyName);
             usersCollection.insertOne(user);
-        } else {
-            ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
-            user.append("jars_owned", userJars);
-            ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
-            user.append("jars_contributing", contributingJars);
         }
 
         return user;
     }
 
-    // Return an arraylist containing all the jars that this user owns and contributes too.
+    // Return an arraylist containing all the jars that this user owns and contributes to.
     public ArrayList<Document> getUserJars(String email) {
-        ArrayList<Document> userJars = getDocuments(ejarCollection, "owner_email", email);
-        ArrayList<Document> contributingJars = getDocuments(ejarCollection, "contributors", email);
-        userJars.addAll(contributingJars);
-        
-        for (Document jar : userJars) {
-            jar.append("id_String", jar.get("_id").toString());
+        Document document = new Document();
+        ArrayList<Document> userJars = new ArrayList<>();
+
+        // Find all the jars this user owned
+        MongoCursor<Document> query = ejarCollection.find(eq("owner_email", email)).iterator();
+        while (query.hasNext()) {
+            document = query.next();
+            // if (document.getList("contributors", String.class).size() > 0) {
+            //     document.append("type", "shared");
+            // } else {
+            //     document.append("type", "personal");
+            // }
+            document.append("id_String", document.get("_id").toString());
+            document.append("status", getOpeningStatus(document));
+            userJars.add(document);
         }
+
+        // Find all the jars this user is contributing to
+        query = ejarCollection.find(eq("contributors", email)).iterator();
+        while (query.hasNext()) {
+            document = query.next();
+            document.append("type", "contributing");
+            document.append("id_String", document.get("_id").toString());
+            document.append("status", getOpeningStatus(document));
+            userJars.add(document);
+        }
+
         return userJars;
     }
 
@@ -140,39 +184,85 @@ public class EjarInterface {
 
     // ------------------------------------------------------ EJar Object Operations -------------------------------------------//
     // Create an jar with owner being the email given, no contents and no contributors, duplicate names are allowed.
-    public void createJar(String email, String jarName, String tag) {
+    public void createJar(String email, String jarName, String tag, String type) {
         Document jar = new Document("owner_email", email)
                         .append("contributors", new ArrayList<Document>())
                         .append("name", jarName)
                         .append("tag", tag)
-                        .append("opening_Time", 0);
+                        .append("type", type)
+                        .append("opening_Time", 0)
+                        .append("opening_Status", false);
         ejarCollection.insertOne(jar);
     }
 
     // Return an arraylist of all the contents associated with this jar
-    public ArrayList<Document> readJar(String jarID) {return getDocuments(contentsCollection, "jar_id", jarID);}
+    public ArrayList<Document> readJar(String jarID) {
+        ArrayList<Document> contents = getDocuments(contentsCollection, "jar_id", jarID);
+        for (Document content : contents) {
+            content.append("id_String", content.get("_id").toString());
+        }
+        return contents;
+    }
 
     // Or an arraylist of the contents associated with a specific user
     public ArrayList<Document> readJar(String jarID, String ownerEmail) {
-        return getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+        ArrayList<Document> contents = getDocuments(contentsCollection, "jar_id", jarID, "owner_email", ownerEmail);
+        for (Document content : contents) {
+            content.append("id_String", content.get("_id").toString());
+        }
+        return contents;
     }
 
-    // Update jar attributes only, nothing to do with the contents associated with it.
-    // public ArrayList<Document> updateJar
+    // --------------- Various Update Jar Stuff------------------- //
+    public void addContributor(String jarID, String contributorEmail) {
+        ObjectId idObject = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", idObject), Updates.addToSet("contributors", contributorEmail));
+    }
 
+    public void removeContributor(String jarID, String contributorEmail) {
+        ObjectId idObject = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", idObject), Updates.pull("contributors", contributorEmail));
+    }
+
+    // Assign opening time ralative to current time
+    public void setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minutesFromNow);
+        calendar.add(Calendar.HOUR, hoursFromNow);
+        calendar.add(Calendar.DATE, daysFromNow);
+        ObjectId objectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", calendar.getTime()));
+    }
+
+    public void clearOpeningTime(String jarID) {
+        ObjectId objectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", 0));
+    }
+
+    public void openJar(String jarID) {
+        ObjectId ObjectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", ObjectID), Updates.set("opening_Status", true));
+    }
+
+    public void closeJar(String jarID) {
+        ObjectId ObjectID = new ObjectId(jarID);
+        ejarCollection.findOneAndUpdate(eq("_id", ObjectID), Updates.set("opening_Status", false));
+    }
+    // --------------- End of Update Jar Stuff --------------------//
 
     // Delete an jar by it's unique id, and all the contents associated with it as well.
-    public boolean deleteJar(String jarID) {
+    public void deleteJar(String jarID) {
         ObjectId idObject = new ObjectId(jarID);
-        ejarCollection.deleteOne(new Document("_id", idObject));
-        DeleteResult result = contentsCollection.deleteMany(new Document("jar_id", jarID));
-        return result.wasAcknowledged();
+        ejarCollection.deleteOne(eq("_id", idObject));
+        contentsCollection.deleteMany(eq("jar_id", jarID));
     }
 
+    
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
     // Create an content object that associates with the jar id, it's owner's email, and timestamp it.
     public void createContent(String jarID, String ownerEmail, String message) {
-        java.util.Date date = new java.util.Date();
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
         Document content = new Document("jar_id", jarID)
                             .append("owner_email", ownerEmail)
                             .append("message", message)
@@ -183,17 +273,14 @@ public class EjarInterface {
     // No need for read content, since all the content informations are retrived by readJar()
 
     // Saves the content into the database, if one exist it will be overwritten, return an arraylist of contents in that jar.
-    public boolean updateContent(String contentID, String newMessage) {
+    public void updateContent(String contentID, String newMessage) {
         ObjectId objectID = new ObjectId(contentID);
-        UpdateResult result = contentsCollection.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
-        return result.wasAcknowledged();
+        contentsCollection.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
     }
 
-    // Create content with the given id.
-    public boolean deleteContent(String contentID) {
-        ObjectId idObject = new ObjectId(contentID);
-        contentsCollection.deleteOne(new Document("_id", idObject));
-        DeleteResult result = contentsCollection.deleteOne(new Document("jar_id", contentID));
-        return result.wasAcknowledged();
+    // Delete content with the given id.
+    public void deleteContent(String contentID) {
+        ObjectId objectID = new ObjectId(contentID);
+        contentsCollection.deleteOne(eq("_id", objectID));
     }
 }
