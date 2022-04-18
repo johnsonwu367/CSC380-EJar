@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import coolPlane from "./yellowPlaneBg.png";
-import brownWood from "./yellowPlaneBg2.png";
+import orangePlane from "./orangePlaneBg.png";
+import brownWood from "./brownWood.jpg";
 
-export const MainContainer = styled.div`
+export const AppFeatContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,9 +11,9 @@ export const MainContainer = styled.div`
     position: relative;
     z-index: 1;
 `
-export const MainBg = styled.div`
-    background-image: url(${coolPlane});
-    @media screen and (max-width: 1200px){
+export const AppFeatBg = styled.div`
+    background-image: url(${orangePlane});
+    @media screen and (max-width: 1000px){
         background-image: url(${brownWood});
     }
     background-size: cover;
@@ -27,7 +27,7 @@ export const MainBg = styled.div`
     overflow: hidden;
 `
 
-export const MainContent = styled.div`
+export const AppFeatContent = styled.div`
     z-index: 3;
     width: 100%;
     position: absolute;
@@ -37,8 +37,8 @@ export const MainContent = styled.div`
     align-items: center;
 `
 
-export const MainH1 = styled.h1`
-    color: #fff;
+export const AppFeatH1 = styled.h1`
+    color: white;
     font-size: 48px;
     text-align: center;
     @media screen and (max-width: 768px) {
@@ -49,9 +49,9 @@ export const MainH1 = styled.h1`
     }
 `
 
-export const MainP = styled.p`
+export const AppFeatP = styled.p`
     margin-top: 24px;
-    color: #fff;
+    color: white;
     font-size: 24px;
     text-align: center;
     max-width: 600px;
@@ -61,11 +61,4 @@ export const MainP = styled.p`
     @media screen and (max-width: 480px){
         font-size: 18px;
     }
-`
-
-export const MainBtnWrapper = styled.div`
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 `

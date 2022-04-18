@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import coolPlane from "./yellowPlaneBg.png";
-import brownWood from "./yellowPlaneBg2.png";
+import brownWood from "./emptyJarBg.png";
 
-export const MainContainer = styled.div`
+export const ContactContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,11 +10,8 @@ export const MainContainer = styled.div`
     position: relative;
     z-index: 1;
 `
-export const MainBg = styled.div`
-    background-image: url(${coolPlane});
-    @media screen and (max-width: 1200px){
-        background-image: url(${brownWood});
-    }
+export const ContactBg = styled.div`
+    background-image: url(${brownWood});
     background-size: cover;
     position: absolute;
     top: 0;
@@ -27,7 +23,7 @@ export const MainBg = styled.div`
     overflow: hidden;
 `
 
-export const MainContent = styled.div`
+export const ContactContent = styled.div`
     z-index: 3;
     width: 100%;
     position: absolute;
@@ -37,8 +33,8 @@ export const MainContent = styled.div`
     align-items: center;
 `
 
-export const MainH1 = styled.h1`
-    color: #fff;
+export const ContactH1 = styled.h1`
+    color: white;
     font-size: 48px;
     text-align: center;
     @media screen and (max-width: 768px) {
@@ -49,9 +45,9 @@ export const MainH1 = styled.h1`
     }
 `
 
-export const MainP = styled.p`
+export const ContactP = styled.p`
     margin-top: 24px;
-    color: #fff;
+    color: white;
     font-size: 24px;
     text-align: center;
     max-width: 600px;
@@ -61,11 +57,4 @@ export const MainP = styled.p`
     @media screen and (max-width: 480px){
         font-size: 18px;
     }
-`
-
-export const MainBtnWrapper = styled.div`
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 `
