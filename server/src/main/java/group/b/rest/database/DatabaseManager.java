@@ -17,6 +17,8 @@ public class DatabaseManager {
         String rest = "@cluster0-shard-00-00.faubx.mongodb.net:27017,cluster0-shard-00-01.faubx.mongodb.net:27017,cluster0-shard-00-02.faubx.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-5po8sy-shard-0&authSource=admin&retryWrites=true&w=majority";
         String full = "mongodb://" + username + ":" + password + rest;
 
+        // String rest = "@cluster0.faubx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+        // String full = "mongodb+srv://" + username + ":" + password + rest;
         MongoClient mongoClient = MongoClients.create(full);
         return mongoClient.getDatabase("EJar");
     }
