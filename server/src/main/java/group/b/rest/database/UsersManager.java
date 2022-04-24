@@ -30,6 +30,12 @@ public class UsersManager {
 
     // Get one user from the database, more commonly used
     public Document getUser(String email, String givenName, String familyName) {
+        // Error handling
+        if (email == null) {return null;}
+        if (givenName == null) {givenName = "";}
+        if (familyName == null) {familyName = "";}
+
+        // Look for the user in the database.
         Document user = users.find(new Document("email", email)).first();
 
         // If none exist a new user will be created.
@@ -49,6 +55,7 @@ public class UsersManager {
 
     // Delete an user, doubt it will ever be used...
     public boolean deleteUser(String email) {
+        if (email == null) {return false;}
         DeleteResult result = users.deleteOne(new Document("email", email));
         return result.wasAcknowledged();
     }

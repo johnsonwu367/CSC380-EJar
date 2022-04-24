@@ -64,29 +64,28 @@ public class EjarInterface {
 
 
     // --------------- Various Update Jar Stuff------------------- //
-    public void addContributor(String jarID, String contributorEmail) { eJarsManager.addContributor(jarID, contributorEmail); }
+    public ArrayList<String> getContributors(String jarID) { return eJarsManager.getContributors(jarID); }
 
-    public void removeContributor(String jarID, String contributorEmail) { eJarsManager.removeContributor(jarID, contributorEmail); }
+    public boolean addContributor(String jarID, String contributorEmail) { return eJarsManager.addContributor(jarID, contributorEmail); }
+
+    public boolean  removeContributor(String jarID, String contributorEmail) { return eJarsManager.removeContributor(jarID, contributorEmail); }
 
     // Assign opening time ralative to current time
-    public void setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) { eJarsManager.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow); }
+    public boolean setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) { return eJarsManager.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow); }
 
-    public void clearOpeningTime(String jarID) { eJarsManager.clearOpeningTime(jarID); }
+    public boolean clearOpeningTime(String jarID) { return eJarsManager.clearOpeningTime(jarID); }
     // --------------- End of Update Jar Stuff --------------------//
 
     // Delete an jar by it's unique id, and all the contents associated with it as well.
-    public void deleteJar(String jarID) {
-        eJarsManager.deleteJar(jarID);
-        contentsManager.deleteJarContents(jarID);
-    }
+    public boolean deleteJar(String jarID) { return eJarsManager.deleteJar(jarID) && contentsManager.deleteJarContents(jarID); }
 
     
     // ----------------------------------------------------- Content Object Operations -----------------------------------------//
-    public void createContent(String jarID, String ownerEmail, String message) { contentsManager.createContent(jarID, ownerEmail, message); }
+    public boolean createContent(String jarID, String ownerEmail, String message) { return contentsManager.createContent(jarID, ownerEmail, message); }
 
     // No need for read content, since all the content informations are retrived by readJar()
 
-    public void updateContent(String contentID, String newMessage) { contentsManager.updateContent(contentID, newMessage); }
+    public boolean updateContent(String contentID, String newMessage) { return contentsManager.updateContent(contentID, newMessage); }
 
-    public void deleteContent(String contentID) { contentsManager.deleteContent(contentID); }
+    public boolean deleteContent(String contentID) { return contentsManager.deleteContent(contentID); }
 }

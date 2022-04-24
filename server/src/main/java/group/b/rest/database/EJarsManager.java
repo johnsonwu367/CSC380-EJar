@@ -28,13 +28,18 @@ public class EJarsManager {
     // ----------------------------------------------------- Start of Create Operations -------------------------------------------------- //
     // Create an jar with owner being the email given, no contents and no contributors, duplicate names are allowed.
     public boolean createJar(String email, String jarName, String tag, String type) {
+        // Error handling
+        if (email == null) {return false;}
+        if (jarName == null) {jarName = "";}
+        if (tag == null) {tag = "";}
+        if (type == null) {type = "";}
+
         Document jar = new Document("owner_email", email)
                         .append("contributors", new ArrayList<Document>())
                         .append("name", jarName)
                         .append("tag", tag)
                         .append("type", type)
-                        .append("opening_Time", 0)
-                        .append("opening_Status", false);
+                        .append("opening_Time", 0);
         try {
             ejars.insertOne(jar);
             return true;
@@ -59,6 +64,8 @@ public class EJarsManager {
 
     // Return an arraylist containing all the jars that this user owns and contributes to.
     public ArrayList<Document> getUserJars(String email) {
+        if (email == null) { return null; }
+
         Document document = new Document();
         ArrayList<Document> userJars = new ArrayList<>();
 
@@ -88,33 +95,71 @@ public class EJarsManager {
 
         return userJars;
     }
+
+    public ArrayList<String> getContributors(String jarID) {
+        if (jarID == null) {return null;}
+
+        ObjectId idObject = new ObjectId(jarID);
+        Document jar = ejars.find(eq("_id", idObject)).first();
+        ArrayList<String> contributors = jar.get("contributors", new ArrayList<String>().getClass());
+        return contributors;
+    }
     // ----------------------------------------------------- End of Read Operations ---------------------------------------------------- //
 
 
     // ----------------------------------------------------- Start of Update Operations ------------------------------------------------ //
-    public void addContributor(String jarID, String contributorEmail) {
-        ObjectId idObject = new ObjectId(jarID);
-        ejars.findOneAndUpdate(eq("_id", idObject), Updates.addToSet("contributors", contributorEmail));
+    public boolean addContributor(String jarID, String contributorEmail) {
+        if (jarID == null || contributorEmail == null) {return false;}
+
+        try {
+            ObjectId idObject = new ObjectId(jarID);
+            ejars.findOneAndUpdate(eq("_id", idObject), Updates.addToSet("contributors", contributorEmail));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+        
     }
 
-    public void removeContributor(String jarID, String contributorEmail) {
-        ObjectId idObject = new ObjectId(jarID);
-        ejars.findOneAndUpdate(eq("_id", idObject), Updates.pull("contributors", contributorEmail));
+    public boolean removeContributor(String jarID, String contributorEmail) {
+        if (jarID == null || contributorEmail == null) {return false;}
+
+        try {
+            ObjectId idObject = new ObjectId(jarID);
+            ejars.findOneAndUpdate(eq("_id", idObject), Updates.pull("contributors", contributorEmail));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Assign opening time ralative to current time
-    public void setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, minutesFromNow);
-        calendar.add(Calendar.HOUR, hoursFromNow);
-        calendar.add(Calendar.DATE, daysFromNow);
-        ObjectId objectID = new ObjectId(jarID);
-        ejars.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", calendar.getTime()));
+    public boolean setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) {
+        if (jarID == null) {return false;}
+
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, minutesFromNow);
+            calendar.add(Calendar.HOUR, hoursFromNow);
+            calendar.add(Calendar.DATE, daysFromNow);
+            ObjectId objectID = new ObjectId(jarID);
+            ejars.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", calendar.getTime()));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    public void clearOpeningTime(String jarID) {
-        ObjectId objectID = new ObjectId(jarID);
-        ejars.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", 0));
+    public boolean clearOpeningTime(String jarID) {
+        if (jarID == null) {return false;}
+
+        try {
+            ObjectId objectID = new ObjectId(jarID);
+            ejars.findOneAndUpdate(eq("_id", objectID), Updates.set("opening_Time", 0));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
     // ----------------------------------------------------- End of Update Operations -------------------------------------------------- //
 
