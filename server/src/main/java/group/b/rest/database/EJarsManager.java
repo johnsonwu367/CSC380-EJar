@@ -96,13 +96,22 @@ public class EJarsManager {
         return userJars;
     }
 
+    // Assumes the jarID is an valid hexidecimal representation of Object ID.
     public ArrayList<String> getContributors(String jarID) {
         if (jarID == null) {return null;}
 
-        ObjectId idObject = new ObjectId(jarID);
-        Document jar = ejars.find(eq("_id", idObject)).first();
-        ArrayList<String> contributors = jar.get("contributors", new ArrayList<String>().getClass());
-        return contributors;
+        try {
+            ObjectId idObject = new ObjectId(jarID);
+            Document jar = ejars.find(eq("_id", idObject)).first();
+            if (jar == null) {
+                return null;
+            } else {
+                ArrayList<String> contributors = jar.get("contributors", new ArrayList<String>().getClass());
+                return contributors;
+            }
+        } catch (Exception e) {
+            return null;
+        }
     }
     // ----------------------------------------------------- End of Read Operations ---------------------------------------------------- //
 
