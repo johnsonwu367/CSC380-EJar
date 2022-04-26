@@ -53,13 +53,17 @@ public class EJarsManager {
     // ----------------------------------------------------- Start of Read Operations ---------------------------------------------------- //
     // Return all jars existing in the database, shall only be used while developing.
     public ArrayList<Document> getAllJars() {
-        MongoCursor<Document> query = ejars.find().iterator();
-        ArrayList<Document> ejars = new ArrayList<>();
-        while (query.hasNext()) {
-            Document document = query.next();
-            ejars.add(document);
+        try {
+            MongoCursor<Document> query = ejars.find().iterator();
+            ArrayList<Document> ejars = new ArrayList<>();
+            while (query.hasNext()) {
+                Document document = query.next();
+                ejars.add(document);
+            }
+            return ejars;
+        } catch (Exception e) {
+            return null;
         }
-        return ejars;
     }
 
     // Return an arraylist containing all the jars that this user owns and contributes to.
@@ -69,31 +73,35 @@ public class EJarsManager {
         Document document = new Document();
         ArrayList<Document> userJars = new ArrayList<>();
 
-        // Find all the jars this user owned
-        MongoCursor<Document> query = ejars.find(eq("owner_email", email)).iterator();
-        while (query.hasNext()) {
-            document = query.next();
-            // if (document.getList("contributors", String.class).size() > 0) {
-            //     document.append("type", "shared");
-            // } else {
-            //     document.append("type", "personal");
-            // }
-            document.append("id_String", document.get("_id").toString())
-                    .append("status", getOpeningStatus(document));
-            userJars.add(document);
-        }
+        try {
+            // Find all the jars this user owned
+            MongoCursor<Document> query = ejars.find(eq("owner_email", email)).iterator();
+            while (query.hasNext()) {
+                document = query.next();
+                // if (document.getList("contributors", String.class).size() > 0) {
+                //     document.append("type", "shared");
+                // } else {
+                //     document.append("type", "personal");
+                // }
+                document.append("id_String", document.get("_id").toString())
+                        .append("status", getOpeningStatus(document));
+                userJars.add(document);
+            }
 
-        // Find all the jars this user is contributing to
-        query = ejars.find(eq("contributors", email)).iterator();
-        while (query.hasNext()) {
-            document = query.next();
-            document.append("type", "contributing")
-                    .append("id_String", document.get("_id").toString())
-                    .append("status", getOpeningStatus(document));
-            userJars.add(document);
-        }
+            // Find all the jars this user is contributing to
+            query = ejars.find(eq("contributors", email)).iterator();
+            while (query.hasNext()) {
+                document = query.next();
+                document.append("type", "contributing")
+                        .append("id_String", document.get("_id").toString())
+                        .append("status", getOpeningStatus(document));
+                userJars.add(document);
+            }
 
-        return userJars;
+            return userJars;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     // Assumes the jarID is an valid hexidecimal representation of Object ID.

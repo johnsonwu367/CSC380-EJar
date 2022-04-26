@@ -45,38 +45,50 @@ public class ContentsManager {
     // --------------------------------------------------- Start of Read Operations ------------------------------------------------- //
     // Get all contents existing in the database, shall only be only while developing.
     public ArrayList<Document> getAllContent() {
-        MongoCursor<Document> query = contents.find().iterator();
-        ArrayList<Document> contents = new ArrayList<>();
-        while (query.hasNext()) {
-            Document document = query.next();
-            contents.add(document);
+        try {
+            MongoCursor<Document> query = contents.find().iterator();
+            ArrayList<Document> contents = new ArrayList<>();
+            while (query.hasNext()) {
+                Document document = query.next();
+                contents.add(document);
+            }
+            return contents;
+        } catch (Exception e) {
+            return null;
         }
-        return contents;
     }
     
     // Get all contents associated with the jar.
     public ArrayList<Document> getJarContents(String jarID) {
-        ArrayList<Document> documents = new ArrayList<>();
-        MongoCursor<Document> query = contents.find(eq("jar_id", jarID)).iterator();
-        while (query.hasNext()) {
-            Document document = query.next();
-            document.append("id_String", document.get("_id").toString());
-            documents.add(document);
+        try {
+            ArrayList<Document> documents = new ArrayList<>();
+            MongoCursor<Document> query = contents.find(eq("jar_id", jarID)).iterator();
+            while (query.hasNext()) {
+                Document document = query.next();
+                document.append("id_String", document.get("_id").toString());
+                documents.add(document);
+            }
+            return documents;
+        } catch (Exception e) {
+            return null;
         }
-        return documents;
     }
 
     // Get contents associated with the jar and the user email.
     public ArrayList<Document> getJarContents(String jarID, String ownerEmail) {
-        ArrayList<Document> documents = new ArrayList<>();
-        Document filter = new Document("jar_id", jarID).append("owner_email", ownerEmail);
-        MongoCursor<Document> query = contents.find(filter).iterator();
-        while (query.hasNext()) {
-            Document document = query.next();
-            document.append("id_String", document.get("_id").toString());
-            documents.add(document);
+        try {
+            ArrayList<Document> documents = new ArrayList<>();
+            Document filter = new Document("jar_id", jarID).append("owner_email", ownerEmail);
+            MongoCursor<Document> query = contents.find(filter).iterator();
+            while (query.hasNext()) {
+                Document document = query.next();
+                document.append("id_String", document.get("_id").toString());
+                documents.add(document);
+            }
+            return documents;
+        } catch (Exception e) {
+            return null;
         }
-        return documents;
     }
     // ----------------------------------------------------- End of Read Operations -------------------------------------------------- //
 
