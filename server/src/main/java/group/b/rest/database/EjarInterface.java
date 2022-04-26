@@ -68,7 +68,7 @@ public class EjarInterface {
 
     public boolean addContributor(String jarID, String contributorEmail) { return eJarsManager.addContributor(jarID, contributorEmail); }
 
-    public boolean  removeContributor(String jarID, String contributorEmail) { return eJarsManager.removeContributor(jarID, contributorEmail); }
+    public boolean  removeContributor(String jarID, String contributorEmail) { return eJarsManager.removeContributor(jarID, contributorEmail) && contentsManager.deleteContributorContents(jarID, contributorEmail);}
 
     // Assign opening time ralative to current time
     public boolean setOpeningTime(String jarID, int daysFromNow, int hoursFromNow, int minutesFromNow) { return eJarsManager.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow); }

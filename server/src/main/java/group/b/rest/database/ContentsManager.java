@@ -106,5 +106,11 @@ public class ContentsManager {
         DeleteResult result = contents.deleteMany(eq("jar_id", jarID));
         return result.wasAcknowledged();
     }
+
+    public boolean deleteContributorContents(String jarID, String contributorEmail) {
+        Document filter = new Document("jar_id", jarID).append("owner_email", contributorEmail);
+        DeleteResult result = contents.deleteMany(filter);
+        return result.wasAcknowledged();
+    }
     // --------------------------------------------------- End of Delete Operations --------------------------------------------------- //
 }
