@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import group.b.rest.database.EjarInterface;
@@ -177,6 +178,29 @@ public class EjarResource{
     public Response openJar(String jarID) {
         ArrayList <Document> contents = new EjarInterface().readJar(jarID);
         return Response.status(Response.Status.OK).entity(contents).build();
+    }
+
+    @POST
+    @Path("/getContributors")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getContributors(String jarID) {
+        ArrayList<String> contributors = new EjarInterface().getContributors(jarID);
+        return Response.status(Response.Status.OK).entity(contributors).build();
+    }
+
+    @POST
+    @Path("/removeContributor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeContributor(String info) {
+        JSONObject jarInfo = new JSONObject(info);
+        String jarID = jarInfo.getString("jarId");
+        JSONArray contributorEmails = jarInfo.getJSONArray("emails");
+        EjarInterface rc = new EjarInterface();
+        for (Object contributorEmail : contributorEmails) {
+            // System.out.println(contributorEmail.toString());
+            rc.removeContributor(jarID, contributorEmail.toString());
+        }
+        return Response.status(Response.Status.OK).entity("contributor(s) successfully removed").build();
     }
 
 }

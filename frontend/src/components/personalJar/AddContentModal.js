@@ -6,6 +6,15 @@ const AddContentModal = ({ closeModal }) => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
     const [content, setContent] = useState("");
+    const [addjarContentError, setjarContentError] = useState('');
+
+    const validate = () => {   
+        if (!content.trim()) {
+            setjarContentError("*Please enter some contents");
+            return false;
+        }
+        return true;
+    };
 
     const handleChange = e => {
         setContent(e.target.value)
@@ -13,14 +22,17 @@ const AddContentModal = ({ closeModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let data = {
-            jarId: currJarInfo.id,
-            email: loginData.email,
-            message: content
-        };
-        const res = await axios.post("http://localhost:9088/ejar/addJarContent", data);
-        console.log(res.data);
-        closeModal(false);
+        const isValid = validate();
+        if (isValid) {
+            let data = {
+                jarId: currJarInfo.id,
+                email: loginData.email,
+                message: content.trim()
+            };
+            const res = await axios.post("http://localhost:9088/ejar/addJarContent", data);
+            console.log(res.data);
+            closeModal(false);
+        }
     }
   return (
     <div className='modalBg'>
@@ -35,10 +47,11 @@ const AddContentModal = ({ closeModal }) => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         {/* <label htmlFor='name'>Jar Name: </label> */}
-                        <input className='inputBox' type='text' name='name' placeholder='Enter content' value={content} onChange={handleChange}/>
+                        <textarea className='contentsTxtArea' cols='50' rows='5' type='text' name='name' placeholder='Enter content' value={content} onChange={handleChange}/>
                     </div>
-                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
+                    <p className='errMsg'>{addjarContentError}</p>
                     <button className = 'submitBtn' type='submit'>Submit</button>
+                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
                 </form>
             </div>
             {/* <div className='footer'>

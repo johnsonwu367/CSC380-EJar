@@ -27,13 +27,17 @@ function JarContentModal({ closeModal }) {
                 <h1>Jar Contents</h1>
             </div>
             <div className='body'>
-                <ul>
+                {jarContents.length === 0 ? 
+                    <p>Sorry, there are currently no contents in this jar</p>
+                    :
+                    <ul>
                     {jarContents.map((contents, index) => {
                         return (
                             <li key={index}><div onClick={() => {handleOpenContent(contents.id_String, contents.jar_id, contents.owner_email, contents.message)}}>{contents.created}</div></li>
                         )
                     })}
                 </ul>
+                }
             </div>
             {/* <div className='footer'>
                 

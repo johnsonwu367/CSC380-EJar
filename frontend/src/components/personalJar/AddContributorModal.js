@@ -6,20 +6,33 @@ const AddContributorModal = ({ closeModal }) => {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
     const [contributorEmail, setcontributorEmail] = useState("");
 
+    const [emailError, setEmailError] = useState("");
+
+    const validate = () => {
+        if (!contributorEmail.trim()) {
+            setEmailError("*Please enter a correct email")
+            return false;
+        }
+        return true;
+    }
+
     const handleChange = e => {
         setcontributorEmail(e.target.value)
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let data = {
-            jarId: currJarInfo.id,
-            email: contributorEmail,
-        };
-        console.log(data);
-        const res = await axios.post("http://localhost:9088/ejar/addContributor", data);
-        console.log(res.data);
-        closeModal(false);
+        const isValid = validate();
+        if (isValid) {
+            let data = {
+                jarId: currJarInfo.id,
+                email: contributorEmail.trim(),
+            };
+            console.log(data);
+            const res = await axios.post("http://localhost:9088/ejar/addContributor", data);
+            console.log(res.data);
+            closeModal(false);
+        }
     }
   return (
     <div className='modalBg'>
@@ -35,9 +48,10 @@ const AddContributorModal = ({ closeModal }) => {
                     <div>
                         <label htmlFor='name'>Email: </label>
                         <input className='inputBox' type='email' name='name' placeholder='Enter contributor email' value={contributorEmail} onChange={handleChange}/>
+                        <p className='errMsg'>{emailError}</p>
                     </div>
-                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
                     <button className = 'submitBtn' type='submit'>Submit</button>
+                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
                 </form>
             </div>
             {/* <div className='footer'>

@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import ".././Sidebar.css"
-import { IoMdAdd, IoMdPersonAdd } from 'react-icons/io'
+import { IoMdAdd } from 'react-icons/io'
 import { FiEdit3 } from 'react-icons/fi'
 import { BiTime } from 'react-icons/bi'
 import { MdDeleteForever } from 'react-icons/md'
-import { GiMasonJar } from 'react-icons/gi'
 import axios from 'axios'
 import AddContentModal from './AddContentModal'
 import AddContributorModal from './AddContributorModal'
 import DeleteJarModal from './DeleteJarModal'
 import JarContentModal from './JarContentModal'
 import OpeningTimeModal from './OpeningTimeModal'
+import { useNavigate } from 'react-router-dom'
 
 
 const PersonalJarSidebar = () => {
@@ -21,6 +21,7 @@ const PersonalJarSidebar = () => {
     const [deleteJarModal, setDeleteJarModal] = useState(false);
     const [jarContentModal, setJarContentModal] = useState(false);
     const [openingTimeModal, setOpeningTimeModal] = useState(false);
+    let navigate = useNavigate();
 
     const viewJarContent = async () => {
         const res = await axios.post("http://localhost:9088/ejar/getJarContent", {jarId: currJarInfo.id, email: loginData.email});
@@ -28,16 +29,17 @@ const PersonalJarSidebar = () => {
         // console.log(JSON.parse(localStorage.getItem('jar-contents')));
         setJarContentModal(true);
     }
-    
-    const handleOpenJar = async () => {
-      const res = await axios.post("http://localhost:9088/ejar/openJar", currJarInfo.id);
-      console.log(res.data);
+
+    const backToJarCollection = async () => {
+      const res = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
+      localStorage.setItem('jars', JSON.stringify(res.data));
+      navigate("/jar-collections");
     }
 
   return (
       <div className='Sidebar'>
         <div className='header'>
-            <h1>EJar</h1>
+            <h1 className='SidebarTitle' onClick={backToJarCollection}>EJar</h1>
         </div>
         
       <ul className='Sidebar-List'>
@@ -48,7 +50,7 @@ const PersonalJarSidebar = () => {
                 <div id="title">Set Jar Opening Time</div>
               </li>
             :
-              <li className="row"> 
+              <li className="row" onClick={setOpeningTimeModal}> 
                 <div>{currJarInfo.opening_Time}</div>
               </li>
           }
@@ -59,22 +61,15 @@ const PersonalJarSidebar = () => {
         {/* This button and function will be gone when jar open time is set */}
         {/* when view jar content button is clicked modal appears with list of jar contents when a jar content is clicked it opens another modal with actual contents displayed on the right and options to edit or delete on the left */}
         {/* () => setJarContentModal(true) */}
-        <li className="row" onClick={viewJarContent}> 
+        {currJarInfo.opening_Time===0 && 
+          <li className="row" onClick={viewJarContent}> 
             <div id="icon"><FiEdit3/></div> 
             <div id="title">View Jar Content</div>
-        </li>
-        {/* this function should only be avaliable to owners of a shared jar */}
-        <li className="row" onClick={() => {setAddContributorModal(true)}}> 
-            <div id="icon"><IoMdPersonAdd/></div> 
-            <div id="title">Add Contributor</div>
-        </li>
+          </li>
+        }
         <li className="row" onClick={() => {setDeleteJarModal(true)}}> 
             <div id="icon"><MdDeleteForever/></div> 
             <div id="title">Delete Jar</div>
-        </li>
-        <li className="row" onClick={handleOpenJar}> 
-            <div id="icon"><GiMasonJar/></div> 
-            <div id="title">Open Jar</div>
         </li>
       </ul>
       {openAddContentModal && <AddContentModal closeModal={setAddContentModal}/>}

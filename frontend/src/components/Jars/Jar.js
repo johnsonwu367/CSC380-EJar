@@ -21,7 +21,7 @@ function Jar(props, jar ) {
         // else navigate to owner jar page or collaborator page
     };
     return (   
-        <FigureJarWrap data-category={props.label} onClick={() => {let currJar = {id: props.id, name: props.text, type: props.type, opening_Time: props.opening_Time}; handleOpenJar(currJar);}}>
+        <FigureJarWrap data-category={props.label} onClick={() => {let currJar = {id: props.id, name: props.text, type: props.type, opening_Time: props.opening_Time, status: props.status}; handleOpenJar(currJar);}}>
             <DivJarsInfo>
                 <JarsH5>{props.text}</JarsH5>
             </DivJarsInfo>

@@ -1,0 +1,41 @@
+.modalBg {
+    z-index: 9;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(200, 200, 200, 0.9);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContainer {
+    width: 60%;
+    height: 80%;
+    border-radius: 12px;
+    background-image: url("./openJar_Background.png");
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+}
+
+.closeBtnDiv {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.faTimesBtn {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.contentBox {
+    width: 50%;
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+}

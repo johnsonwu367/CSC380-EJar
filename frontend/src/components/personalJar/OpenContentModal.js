@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import ".././Sidebar.css"
+// import ".././Sidebar.css"
+import "../Modal.css"
 import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 
@@ -44,7 +45,7 @@ function OpenContentModal({ closeModal }) {
                 <h1>View Content</h1>
             </div>
             <div className='body'>
-                <input className='inputBox' type="text" disabled={editDisabled} value={currentMessage} onChange={handleChange}/>
+                <textarea className='contentsTxtArea' cols='50' rows='5' type="text" disabled={editDisabled} value={currentMessage} onChange={handleChange}/>
             </div>
             {editDisabled ? 
                    <div className='footer'>

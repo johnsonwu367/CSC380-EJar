@@ -1,32 +1,36 @@
+import axios from 'axios';
 import React from 'react'
-import { useNavigate } from "react-router-dom";
-import "../Modal.css"
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import ".././Modal.css";
 
-function DeleteJarModal({ closeModal }) {
+function ContributorRemoveJarModal({ closeModal }) {
     let navigate = useNavigate();
-    const loginData = JSON.parse(localStorage.getItem('loginData'));
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
-    const deleteJar = async () =>{
-        const res = await axios.post("http://localhost:9088/ejar/deleteJar", currJarInfo.id);
+    const loginData = JSON.parse(localStorage.getItem('loginData'));
+    const handleSubmit = async () =>{
+        const res = await axios.post("http://localhost:9088/ejar/removeContributor", {jarId: currJarInfo.id, emails: [loginData.email]});
         // console.log(res.data);
         const res2 = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
         // console.log(res2.data);
         localStorage.setItem('jars', JSON.stringify(res2.data));
         // console.log(JSON.parse(localStorage.getItem('jars')));
         navigate("/jar-collections");
+
     }
   return (
     <div className='modalBg'>
         <div className='modalContainer'>
+            {/* <div className='closeBtnDiv'>
+                <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
+            </div> */}
             <div className='title'>
                 <h1>Delete Jar</h1>
             </div>
             <div className='body'>
-                <h5>Are you sure you want to delete this jar?</h5>
+                <p>Are you sure you want to delete this jar? If you delete this jar you will no longer be contributing to it.</p>
             </div>
             <div className='footer'>
-                <button className = 'submitBtn' onClick={deleteJar}>Yes</button>
+                <button className = 'submitBtn' onClick={handleSubmit}>Yes</button>
                 <button className = 'cancelBtn' onClick={() => closeModal(false)}>No</button>
             </div>
         </div>
@@ -34,4 +38,4 @@ function DeleteJarModal({ closeModal }) {
   )
 }
 
-export default DeleteJarModal
+export default ContributorRemoveJarModal
