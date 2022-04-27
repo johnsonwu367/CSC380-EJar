@@ -184,9 +184,13 @@ public class EJarsManager {
     // ----------------------------------------------------- Start of Delete Operations ------------------------------------------------ //
     // Delete an single jar
     public boolean deleteJar(String jarID) {
-        ObjectId idObject = new ObjectId(jarID);
-        DeleteResult result = ejars.deleteOne(eq("_id", idObject));
-        return result.wasAcknowledged();
+        try {
+            ObjectId idObject = new ObjectId(jarID);
+            DeleteResult result = ejars.deleteOne(eq("_id", idObject));
+            return result.wasAcknowledged();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Delete all the jars an user ownes

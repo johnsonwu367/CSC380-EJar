@@ -95,15 +95,23 @@ public class ContentsManager {
 
     // --------------------------------------------------- Start of Update Operations ------------------------------------------------ //
     public boolean updateContent(String contentID, String newMessage) {
-        ObjectId objectID = new ObjectId(contentID);
-        UpdateResult result = contents.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
-        return result.wasAcknowledged();
+        try {
+            ObjectId objectID = new ObjectId(contentID);
+            UpdateResult result = contents.updateOne(eq("_id", objectID), Updates.set("message", newMessage));
+            return result.wasAcknowledged();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean deleteContent(String contentID) {
-        ObjectId objectID = new ObjectId(contentID);
-        DeleteResult result = contents.deleteOne(eq("_id", objectID));
-        return result.wasAcknowledged();
+        try {
+            ObjectId objectID = new ObjectId(contentID);
+            DeleteResult result = contents.deleteOne(eq("_id", objectID));
+            return result.wasAcknowledged();
+        } catch (Exception e) {
+            return false;
+        }
     }
     // --------------------------------------------------- End of Update Operations --------------------------------------------------- //
 
