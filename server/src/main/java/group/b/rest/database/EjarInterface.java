@@ -6,11 +6,13 @@ import java.util.HashMap;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
 
 public class EjarInterface {
+    private MongoClient client;
     private MongoDatabase ejarDB;
     private EJarsManager eJarsManager;
     private UsersManager usersManager; 
@@ -21,7 +23,8 @@ public class EjarInterface {
 
         try {
             // Connect to DB
-            ejarDB = databaseManager.getDatabase();
+            client = databaseManager.getDatabase();
+            ejarDB = client.getDatabase("ejar");
             usersManager = new UsersManager(ejarDB);
             eJarsManager = new EJarsManager(ejarDB);
             contentsManager = new ContentsManager(ejarDB);
@@ -30,6 +33,8 @@ public class EjarInterface {
             throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to connect to database.").build());
         }
     }
+
+    public void close() {client.close();}
 
 
     // ----------------------------------------------------------- For development purposese? ------------------------------------------------------//
