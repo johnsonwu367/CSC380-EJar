@@ -1,15 +1,18 @@
 package group.b.rest.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
 
 public class EjarInterface {
+    private MongoClient client;
     private MongoDatabase ejarDB;
     private EJarsManager eJarsManager;
     private UsersManager usersManager; 
@@ -20,7 +23,8 @@ public class EjarInterface {
 
         try {
             // Connect to DB
-            ejarDB = databaseManager.getDatabase();
+            client = databaseManager.getDatabase();
+            ejarDB = client.getDatabase("ejar");
             usersManager = new UsersManager(ejarDB);
             eJarsManager = new EJarsManager(ejarDB);
             contentsManager = new ContentsManager(ejarDB);
@@ -29,6 +33,8 @@ public class EjarInterface {
             throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to connect to database.").build());
         }
     }
+
+    public void close() {client.close();}
 
 
     // ----------------------------------------------------------- For development purposese? ------------------------------------------------------//
@@ -58,9 +64,52 @@ public class EjarInterface {
     // ------------------------------------------------------ EJar Object Operations -------------------------------------------//
     public boolean createJar(String email, String jarName, String tag, String type) { return eJarsManager.createJar(email, jarName, tag, type); }
 
-    public ArrayList<Document> readJar(String jarID) { return contentsManager.getJarContents(jarID); }
+    // Return all the contents associated with such jar, and then add to each content the details of their owner.
+    // Reason why this function is cursed with 3 loops is because it is cheaper to loop over local variables than TCP connections.
+    public ArrayList<Document> readJar(String jarID) {
+        try {
+            ArrayList<Document> contents = contentsManager.getJarContents(jarID);
+            HashMap<String, Document> usersInfo = new HashMap<>();
+            
+            // Identify the unique users of this contents collection.
+            for (Document content : contents) {
+                usersInfo.put(content.get("owner_email").toString(), new Document());
+            }
 
-    public ArrayList<Document> readJar(String jarID, String ownerEmail) { return contentsManager.getJarContents(jarID, ownerEmail); }
+            // Acquire the infomations about such users (TCP involved).
+            for (String email : usersInfo.keySet()) {
+                usersInfo.put(email, usersManager.getUser(email));
+            }
+
+            // Add them back into the contents.
+            for (Document content : contents) {
+                String email = content.get("owner_email").toString();
+                String givenName = usersInfo.get(email).get("given_name").toString();
+                String familyName = usersInfo.get(email).get("family_name").toString();
+                content.append("given_name", givenName).append("family_name", familyName);
+            }
+            return contents;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // The function becomes a lot shorter since it involves only 1 email.
+    public ArrayList<Document> readJar(String jarID, String ownerEmail) { 
+        try {
+            ArrayList<Document> contents = contentsManager.getJarContents(jarID, ownerEmail); 
+            Document userInfo = usersManager.getUser(ownerEmail);
+            String givenName = userInfo.get("given_name").toString();
+            String familyName = userInfo.get("family_name").toString();
+
+            for (Document content : contents) {
+                content.append("given_name", givenName).append("family_name", familyName);
+            }
+            return contents;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 
     // --------------- Various Update Jar Stuff------------------- //

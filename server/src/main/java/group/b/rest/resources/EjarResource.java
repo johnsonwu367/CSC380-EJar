@@ -18,7 +18,6 @@ import group.b.rest.database.EjarInterface;
 
 @Path("ejar")
 public class EjarResource{
-    
     // testing get request
     @GET
     public String helloWorld() {
@@ -42,7 +41,9 @@ public class EjarResource{
     @Path("/get-all-users")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers() {
-        List <Document> allUsers = new EjarInterface().getAllUsers();
+        EjarInterface database = new EjarInterface();
+        List <Document> allUsers = database.getAllUsers();
+        database.close();
         return Response.status(Response.Status.OK).entity(allUsers).build();
     }
 
@@ -51,9 +52,9 @@ public class EjarResource{
     @Produces(MediaType.APPLICATION_JSON)
     public Response test() {
         EjarInterface database = new EjarInterface();
-        database.updateContent("6252025ade0b77361f3b473b", "New message");
-        ArrayList<Document> allContent = database.getAllContent();
-        return Response.status(Response.Status.OK).entity(allContent).build();
+        ArrayList<Document> contents = database.readJar("62686224968a1c33b2ce22f6");
+        database.close();
+        return Response.status(Response.Status.OK).entity(contents).build();
     }
 
     @POST
@@ -64,7 +65,9 @@ public class EjarResource{
         String userEmail = userInfo.getString("email");
         String givenName = userInfo.getString("givenName");
         String familyName = userInfo.getString("familyName");
-        Document user = new EjarInterface().getUser(userEmail, givenName, familyName);
+        EjarInterface database = new EjarInterface();
+        Document user = database.getUser(userEmail, givenName, familyName);
+        database.close();
         return Response.status(Response.Status.OK).entity(user).build();
     }
 
@@ -73,7 +76,9 @@ public class EjarResource{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJars(String email) {
         // System.out.println(email);
-        ArrayList <Document> jars = new EjarInterface().getUserJars(email);
+        EjarInterface database = new EjarInterface();
+        ArrayList <Document> jars = database.getUserJars(email);
+        database.close();
         return Response.status(Response.Status.OK).entity(jars).build();
     }
 
@@ -86,8 +91,9 @@ public class EjarResource{
         String name = jarInfo.getString("name");
         String tag = jarInfo.getString("tag");
         String type = jarInfo.getString("type");
-        EjarInterface cj = new EjarInterface();
-        cj.createJar(email, name, tag, type);
+        EjarInterface database = new EjarInterface();
+        database.createJar(email, name, tag, type);
+        database.close();
         return Response.status(Response.Status.OK).entity("jar creation success").build();
     }
 
@@ -95,8 +101,9 @@ public class EjarResource{
     @Path("/deleteJar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteJar(String jarId) {
-        EjarInterface cj = new EjarInterface();
-        cj.deleteJar(jarId);
+        EjarInterface database = new EjarInterface();
+        database.deleteJar(jarId);
+        database.close();
         return Response.status(Response.Status.OK).entity("jar deletion success").build();
     }
 
@@ -108,8 +115,9 @@ public class EjarResource{
         String jarId = jarInfo.getString("jarId");
         String email = jarInfo.getString("email");
         String message = jarInfo.getString("message");
-        EjarInterface cc = new EjarInterface();
-        cc.createContent(jarId, email, message);
+        EjarInterface database = new EjarInterface();
+        database.createContent(jarId, email, message);
+        database.close();
         return Response.status(Response.Status.OK).entity("adding jar content success").build();
     }
 
@@ -120,7 +128,9 @@ public class EjarResource{
         JSONObject jarInfo = new JSONObject(info);
         String jarId = jarInfo.getString("jarId");
         String ownerEmail = jarInfo.getString("email");
-        ArrayList<Document> jarContents = new EjarInterface().readJar(jarId, ownerEmail);
+        EjarInterface database = new EjarInterface();
+        ArrayList<Document> jarContents = database.readJar(jarId, ownerEmail);
+        database.close();
         return Response.status(Response.Status.OK).entity(jarContents).build();
     }
     
@@ -131,8 +141,9 @@ public class EjarResource{
         JSONObject jarInfo = new JSONObject(info);
         String jarId = jarInfo.getString("jarId");
         String contributorEmail = jarInfo.getString("email");
-        EjarInterface ac = new EjarInterface();
-        ac.addContributor(jarId, contributorEmail);
+        EjarInterface database = new EjarInterface();
+        database.addContributor(jarId, contributorEmail);
+        database.close();
         return Response.status(Response.Status.OK).entity("adding contributor success").build();
     }
 
@@ -140,8 +151,9 @@ public class EjarResource{
     @Path("/deleteContent")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteContent(String contentID) {
-        EjarInterface dc = new EjarInterface();
-        dc.deleteContent(contentID);
+        EjarInterface database = new EjarInterface();
+        database.deleteContent(contentID);
+        database.close();
         return Response.status(Response.Status.OK).entity("content deletion success").build();
     }
 
@@ -152,8 +164,9 @@ public class EjarResource{
         JSONObject jarInfo = new JSONObject(info);
         String contentID = jarInfo.getString("content_id");
         String newMessage = jarInfo.getString("message");
-        EjarInterface uc = new EjarInterface();
-        uc.updateContent(contentID, newMessage);
+        EjarInterface database = new EjarInterface();
+        database.updateContent(contentID, newMessage);
+        database.close();
         return Response.status(Response.Status.OK).entity("content update success").build();
     }
 
@@ -167,8 +180,9 @@ public class EjarResource{
         int daysFromNow = Integer.valueOf(jarInfo.getString("days"));
         int hoursFromNow = Integer.valueOf(jarInfo.getString("hours"));
         int minutesFromNow = Integer.valueOf(jarInfo.getString("minutes"));
-        EjarInterface ot = new EjarInterface();
-        ot.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow);
+        EjarInterface database = new EjarInterface();
+        database.setOpeningTime(jarID, daysFromNow, hoursFromNow, minutesFromNow);
+        database.close();
         return Response.status(Response.Status.OK).entity("opening time set").build();
     }
 
@@ -176,7 +190,9 @@ public class EjarResource{
     @Path("/openJar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response openJar(String jarID) {
-        ArrayList <Document> contents = new EjarInterface().readJar(jarID);
+        EjarInterface database = new EjarInterface();
+        ArrayList <Document> contents = database.readJar(jarID);
+        database.close();
         return Response.status(Response.Status.OK).entity(contents).build();
     }
 
@@ -184,7 +200,9 @@ public class EjarResource{
     @Path("/getContributors")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getContributors(String jarID) {
-        ArrayList<String> contributors = new EjarInterface().getContributors(jarID);
+        EjarInterface database = new EjarInterface();
+        ArrayList<String> contributors = database.getContributors(jarID);
+        database.close();
         return Response.status(Response.Status.OK).entity(contributors).build();
     }
 
@@ -195,11 +213,12 @@ public class EjarResource{
         JSONObject jarInfo = new JSONObject(info);
         String jarID = jarInfo.getString("jarId");
         JSONArray contributorEmails = jarInfo.getJSONArray("emails");
-        EjarInterface rc = new EjarInterface();
+        EjarInterface database = new EjarInterface();
         for (Object contributorEmail : contributorEmails) {
             // System.out.println(contributorEmail.toString());
-            rc.removeContributor(jarID, contributorEmail.toString());
+            database.removeContributor(jarID, contributorEmail.toString());
         }
+        database.close();
         return Response.status(Response.Status.OK).entity("contributor(s) successfully removed").build();
     }
 
