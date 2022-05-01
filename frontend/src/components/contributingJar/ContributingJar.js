@@ -1,6 +1,6 @@
 import React from 'react'
 import JarOpeningSidebar from '../JarOpeningSidebar';
-import pic from '../Jars/eJar.jpg'
+import pic from '../Images/eJar.jpg'
 import ContributingJarSidebar from './ContributingJarSidebar';
 
 const ContributingJar = () => {

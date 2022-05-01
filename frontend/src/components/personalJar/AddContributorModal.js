@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react'
-import "../Modal.css"
+import React, { useState } from 'react';
+import "../css/Modal.css";
 
 const AddContributorModal = ({ closeModal }) => {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));

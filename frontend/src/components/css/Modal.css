@@ -38,6 +38,8 @@
 }
 
 .body {
+    position: relative;
+    /* border: 1px solid black; */
     flex: 50%;
     display: flex;
     justify-content: center;
@@ -87,4 +89,18 @@
 .errMsg {
     color: red;
     font-size: 12px;
+}
+
+.inputRow {
+    padding: 5px;
+    font-size: 20px;
+    float: left;
+}
+
+.buttons {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* border: 1px solid black; */
 }

@@ -1,0 +1,31 @@
+.contentsContainer {
+    height: 100vh;
+    /* border: 3px solid #66a213; */
+}
+
+.jarHeading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 20%;
+    text-transform: uppercase;
+    /* border: 3px solid #66a213; */
+}
+
+.headingContents {
+    position: absolute;
+    /* border: 3px solid #66a213; */
+}
+
+.headingContents h1 {
+    padding: 10px;
+}
+
+.jarImg {
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 3px solid #73AD21; */
+}

@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import ".././Sidebar.css"
-import { BiTime } from 'react-icons/bi'
-import { MdDeleteForever } from 'react-icons/md'
-import { IoPersonRemoveSharp, IoPersonAddSharp } from 'react-icons/io5'
-import { IoMdAdd } from 'react-icons/io'
-import { FiEdit3 } from 'react-icons/fi'
+import React, { useState } from 'react';
+import "../css/Sidebar.css";
+import { BiTime } from 'react-icons/bi';
+import { MdDeleteForever } from 'react-icons/md';
+import { IoPersonRemoveSharp, IoPersonAddSharp } from 'react-icons/io5';
+import { IoMdAdd } from 'react-icons/io';
+import { FiEdit3 } from 'react-icons/fi';
 import { GrOverview } from 'react-icons/gr'
-import { useNavigate } from 'react-router-dom'
-import AddContentModal from '../personalJar/AddContentModal'
-import axios from 'axios'
-import JarContentModal from '../personalJar/JarContentModal'
-import AddContributorModal from '../personalJar/AddContributorModal'
-import DeleteJarModal from '../personalJar/DeleteJarModal'
-import RemoveContributorModal from '../personalJar/RemoveContributorModal'
-import OpeningTimeModal from '../personalJar/OpeningTimeModal'
+import { useNavigate } from 'react-router-dom';
+import AddContentModal from '../personalJar/AddContentModal';
+import axios from 'axios';
+import JarContentModal from '../personalJar/JarContentModal';
+import AddContributorModal from '../personalJar/AddContributorModal';
+import DeleteJarModal from '../personalJar/DeleteJarModal';
+import RemoveContributorModal from '../personalJar/RemoveContributorModal';
+import OpeningTimeModal from '../personalJar/OpeningTimeModal';
 
 const OwnerJarSidebar = () => {
   let navigate = useNavigate();

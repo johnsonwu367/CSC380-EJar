@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import "../Modal.css"
+import React, { useState } from 'react';
+import "../css/Modal.css";
 import { FaTimes } from 'react-icons/fa';
 import OpenContentModal from './OpenContentModal';
 

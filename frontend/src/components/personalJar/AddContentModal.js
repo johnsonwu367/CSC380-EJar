@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react'
-import "../Modal.css"
+import React, { useState } from 'react';
+import "../css/Modal.css";
 
 const AddContentModal = ({ closeModal }) => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));

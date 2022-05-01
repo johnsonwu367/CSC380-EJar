@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { useNavigate } from "react-router-dom";
-import "../Modal.css"
-import axios from 'axios'
+import "../css/Modal.css";
+import axios from 'axios';
 
 function DeleteJarModal({ closeModal }) {
     let navigate = useNavigate();

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import ".././Modal.css";
+import "../css/Modal.css";
 
 function ContributorRemoveJarModal({ closeModal }) {
     let navigate = useNavigate();
@@ -27,7 +27,7 @@ function ContributorRemoveJarModal({ closeModal }) {
                 <h1>Delete Jar</h1>
             </div>
             <div className='body'>
-                <p>Are you sure you want to delete this jar? If you delete this jar you will no longer be contributing to it.</p>
+                <p>Are you sure you want to delete this jar? If you delete this jar you will no longer be a contributor and all your contents in this jar will be removed.</p>
             </div>
             <div className='footer'>
                 <button className = 'submitBtn' onClick={handleSubmit}>Yes</button>

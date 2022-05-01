@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 // import ".././Sidebar.css"
-import "../Modal.css"
+import "../css/Modal.css";
 import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 

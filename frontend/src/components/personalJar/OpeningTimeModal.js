@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import "../Modal.css"
+import React, { useState } from 'react';
+import "../css/Modal.css";
 import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 
 function OpeningTimeModal({ closeModal }) {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
+    // console.log(currJarInfo);
     const loginData = JSON.parse(localStorage.getItem('loginData'));
     const [dayError, setDayError] = useState("");
     const [hourError, setHourError] = useState("");
@@ -66,9 +67,12 @@ function OpeningTimeModal({ closeModal }) {
             // console.log(res.data);
             const res2 = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
             localStorage.setItem('jars', JSON.stringify(res2.data));
-            // console.log(JSON.parse(localStorage.getItem('jars')))
+            let index = currJarInfo.index;
+            let openTime = res2.data[index].opening_Time;
+            currJarInfo.opening_Time = openTime;
+            localStorage.setItem('currentJar', JSON.stringify(currJarInfo));
             closeModal(false)
-            window.location.reload();
+            // window.location.reload();
         }
     }
   return (

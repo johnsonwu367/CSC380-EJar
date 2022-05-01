@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ".././Sidebar.css"
+import "../css/Sidebar.css"
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from 'react-icons/io'
 import { FiEdit3 } from 'react-icons/fi'

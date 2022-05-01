@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import "./Sidebar.css"
+import "../css/Sidebar.css";
 import { IoMdAdd } from 'react-icons/io'
 import { CgLogOut } from 'react-icons/cg';
-import Modal from './Modal';
-import LogoutModal from './LogoutModal';
+import Modal from '../Modals/Modal';
+import LogoutModal from '../LogoutModal';
 
 const Sidebar = () => {
 

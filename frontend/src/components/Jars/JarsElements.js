@@ -1,57 +1,29 @@
 import styled from 'styled-components';
 
-// function assignRows(grid) {
-//     let row = 0;
-//     let odd = true;
-//     console.dir(grid.children);
-//     [...grid.children].forEach(function (el) {
-//         el.classList.remove(...el.classList.values());
-//         if(
-//             el.previousElementSibling ||
-//             el.offsetLeft <el.previousElementSibling.offsetLeft
-//         ) {
-//             row++;
-//             odd = odd;
-//         }
-//         el.classList.add(`row${row}`, `${odd ? 'odd' : 'even'}` )
-//     });
-// }
-
-// const ro = new ResizeObserver(grids => {
-//     grids.forEach(entry => assignRows(entry.target));
-// });
-//
-// const grid = document.querySelector('JarCard')
-
 export const JarsContainer = styled.div`
-  background: "grey";
-  height: "800px";
-  width: "auto";
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  /* max-width: 1120px; */
-  /* width: 90%; */
-  margin: 0 auto;
+  position: absolute;
+  /* display: flex; */
+  /* flex-flow: column; */
+  /* align-items: center; */
+  /* border: 3px solid #73AD21; */
+  height: calc(100% - 180px);
   overflow: auto;
-// height: calc(100vh -80px);
-// max-height: 100%;
-// width: 100vw;
-// padding: 0rem calc((100vw - 1300px ) /2 );
 `;
 
 export const JarItems = styled.div`
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    max-height: 100%;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    /* align-items: flex-start; */
+    /* height: 100%; */
+    /* max-height: 100%; */
     padding: 0 2rem;
-    width: 650 px;
-    text-transform: uppercase;
-    line-height: 1;
-    font-weight: bold;
+    /* width: 650 px; */
+    /* text-transform: uppercase; */
+    /* line-height: 1; */
+    /* font-weight: bold; */
+    /* border: 3px solid #73AD21; */
+    /* overflow: auto; */
 `;
 
 // @media screen and (max-width: 650px) {
@@ -81,10 +53,15 @@ export const JarsP = styled.p`
 `;
 
 export const JarCard = styled.div`
+  /* position: relative; */
+  border: 3px solid #73AD21; 
   margin: 0 2rem;
-  line-height: 2;
+  /* line-height: 1; */
   width: 300px;
-  // display: grid;
+  display: flex;
+  justify-content: center;
+  /* flex-direction: column; */
+  /* float: right; */
   // grid-template-columns: (repeat(auto-fill, minmax(150px, 1fr));
 `;
 
@@ -114,11 +91,20 @@ export const JarName = styled.h2`
 `;
 
 export const JarLi = styled.li`
+  display: inline-block;
+  /* align-self: flex-end; */
+  /* position: relative; */
+  /* background: gray; */
+  /* border: 3px solid #73AD21;  */
+  /* background-color: gray;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   float: left;
   flex: 1;
-  // width: 10em;
-  
+  width: 200px; */
+  /* height: 1000px; */
+  /* border: 3px solid #73AD21;  */
 `;
 
 export const JarTags = styled.p`
@@ -133,14 +119,18 @@ export const JarTags = styled.p`
 `;
 
 export const JarUl = styled.ul`
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  // float: left;
+  /* border: 3px solid #73AD21; */
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  width: 100%;
+  /* align-items: flex-end;
+  align-content: flex-start; */
+  /* height: 100%; */
+  /* float: right; */
   // width: 30em;
-  list-style-type: none;
-  @media only screen and (min-width: 1024px) {
-    display: flex;
-}
+  /* list-style-type: none; */
 `;
 
 export const JarBr = styled.br`

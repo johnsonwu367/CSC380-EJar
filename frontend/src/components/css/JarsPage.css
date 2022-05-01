@@ -1,0 +1,29 @@
+.heading {
+    text-align: center;
+    padding: 20px;
+    height: 100%;
+    text-transform: uppercase;
+}
+
+.heading h1 {
+    padding: 10px;
+}
+
+.jarTabs {
+    display: inline-block;
+    display: flex;
+    flex-flow: column;
+    /* flex-direction: column; */
+    padding: 0px 5px;
+    height: 100%;
+}
+
+.noJarMsg {
+    position: absolute;
+    display: flex;
+    /* border: 3px solid #73AD21; */
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 180px);
+    width: calc(100% - 310px);
+}

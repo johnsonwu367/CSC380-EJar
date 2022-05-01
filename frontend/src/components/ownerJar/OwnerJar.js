@@ -1,6 +1,6 @@
-import React from 'react'
-import OwnerJarSidebar from './OwnerJarSidebar'
-import pic from '../Jars/eJar.jpg'
+import React from 'react';
+import OwnerJarSidebar from './OwnerJarSidebar';
+import pic from '../Images/eJar.jpg';
 import JarOpeningSidebar from '../JarOpeningSidebar';
 
 const OwnerJar = () => {

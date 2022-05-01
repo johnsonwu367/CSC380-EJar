@@ -1,5 +1,5 @@
-import React from 'react'
-import "./Modal.css"
+import React from 'react';
+import "./css/Modal.css";
 import { useNavigate } from "react-router-dom";
 
 function LogoutModal({ closeModal }) {

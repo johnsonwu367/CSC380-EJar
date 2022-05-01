@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./Modal.css";
+import "../css/Modal.css";
 import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 
@@ -73,22 +73,24 @@ function Modal({ closeModal }) {
             </div>
             <div className='body'>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className='inputRow'>
                         <label htmlFor='name'>Jar Name: </label>
                         <input type='text' name='name' placeholder='Enter a jar name' value={values.name} onChange={handleChange}/>
                     </div>
                     <p className='errMsg'>{jarNameError}</p>
-                    <div>
+                    <div className='inputRow'>
                         <label htmlFor='tag'>Jar Tag: </label>
                         <input type='text' name='tag' placeholder='Enter a jar tag' value={values.tag} onChange={handleChange}/>
                     </div>
                     <p className='errMsg'>{jarTagError}</p>
                     <div>
-                        <label><input type="radio" name="type" value="personal" onChange={handleChange} checked={values.type==="personal"}/>Personal</label>
-                        <label><input type="radio" name="type" value="shared" onChange={handleChange} checked={values.type==="shared"}/>Shared</label>
+                        <label className='inputRow'><input type="radio" name="type" value="personal" onChange={handleChange} checked={values.type==="personal"}/>Personal</label>
+                        <label className='inputRow'><input type="radio" name="type" value="shared" onChange={handleChange} checked={values.type==="shared"}/>Shared</label>
                     </div>
-                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
-                    <button className = 'submitBtn' type='submit'>Submit</button>
+                    <div className='buttons'>
+                        <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
+                        <button className = 'submitBtn' type='submit'>Submit</button>
+                    </div>
                 </form>
             </div>
             {/* <div className='footer'>

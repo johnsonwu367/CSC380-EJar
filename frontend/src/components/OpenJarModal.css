@@ -1,4 +1,4 @@
-.modalBg {
+.modalBackground {
     z-index: 9;
     position: absolute;
     width: 100vw;
@@ -10,23 +10,23 @@
     align-items: center;
 }
 
-.modalContainer {
+.modalWrap {
     width: 60%;
     height: 80%;
     border-radius: 12px;
-    background-image: url("./openJar_Background.png");
+    background-image: url("./Images/openJar_Background.png");
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
     padding: 25px;
 }
 
-.closeBtnDiv {
+.closeButtonDiv {
     display: flex;
     justify-content: flex-end;
 }
 
-.faTimesBtn {
+.closeBtn {
     font-size: 25px;
     cursor: pointer;
 }
