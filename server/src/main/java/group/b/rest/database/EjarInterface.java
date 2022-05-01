@@ -24,7 +24,7 @@ public class EjarInterface {
         try {
             // Connect to DB
             client = databaseManager.getDatabase();
-            ejarDB = client.getDatabase("ejar");
+            ejarDB = client.getDatabase("EJar");
             usersManager = new UsersManager(ejarDB);
             eJarsManager = new EJarsManager(ejarDB);
             contentsManager = new ContentsManager(ejarDB);
