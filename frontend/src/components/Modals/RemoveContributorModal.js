@@ -54,12 +54,12 @@ function RemoveContributorModal({ closeModal }) {
                 {jarContributors.length === 0 ?
                     <p>Sorry, this jar currently has no contributors</p>
                     :
-                    <ul>
+                    <ul className='emailUl'>
                     {jarContributors.map((contributor, index) => {
                         return (
-                            <div key={index}>
+                            <div key={index} className='inputRow'>
                                 <input type="checkbox" value={contributor} onChange={handleChange}/>
-                                {contributor}
+                                <p>{contributor}</p>
                             </div>
                         )
                     })}

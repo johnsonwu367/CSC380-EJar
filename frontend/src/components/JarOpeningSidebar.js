@@ -5,7 +5,7 @@ import { MdDeleteForever } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import DeleteJarModal from './Modals/DeleteJarModal';
 import axios from 'axios';
-import OpenJarModal from './OpenJarModal';
+import OpenJarModal from './Modals/OpenJarModal';
 import ContributorRemoveJarModal from './Modals/ContributorRemoveJarModal';
 
 const JarOpeningSidebar = () => {

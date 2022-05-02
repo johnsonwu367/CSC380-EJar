@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import AddContentModal from '../Modals/AddContentModal';
 import axios from 'axios';
 import JarContentModal from '../Modals/JarContentModal';
-import AddContributorModal from '../personalJar/AddContributorModal';
+import AddContributorModal from '../Modals/AddContributorModal';
 import DeleteJarModal from '../Modals/DeleteJarModal';
-import RemoveContributorModal from '../personalJar/RemoveContributorModal';
+import RemoveContributorModal from '../Modals/RemoveContributorModal';
 import OpeningTimeModal from '../Modals/OpeningTimeModal';
 
 const OwnerJarSidebar = () => {

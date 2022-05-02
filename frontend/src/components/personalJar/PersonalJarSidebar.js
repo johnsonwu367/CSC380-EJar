@@ -6,7 +6,7 @@ import { BiTime } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import axios from 'axios';
 import AddContentModal from '../Modals/AddContentModal';
-import AddContributorModal from './AddContributorModal';
+import AddContributorModal from '../Modals/AddContributorModal';
 import DeleteJarModal from '../Modals/DeleteJarModal';
 import JarContentModal from '../Modals/JarContentModal';
 import OpeningTimeModal from '../Modals/OpeningTimeModal';

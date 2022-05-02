@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
-import "./OpenJarModal.css";
+import "../css/OpenJarModal.css";
 
 function OpenJarModal({ closeModal }) {
     const jarContents = JSON.parse(localStorage.getItem('jar-contents'));
@@ -11,15 +11,17 @@ function OpenJarModal({ closeModal }) {
                 <FaTimes className='closeBtn' onClick={() => closeModal(false)}/>
             </div>
             {jarContents.length === 0 ? 
-                    <h1>Sorry, there are currently no contents in this jar</h1>
+                    <h1>Sorry, there are no contents in this jar</h1>
                     :
-                    <ul>
+                    <ul className='openJarContentsUl'>
                     {jarContents.map((contents, index) => {
                         return (
-                            <div key={index} className="contentBox">
-                                <p>{contents.message}</p>
+                            <div key={index} className='contentBoxContainer'>
+                                <div className="contentBox">
+                                    <h4>{contents.given_name}:</h4>
+                                    <p>{contents.message}</p>
+                                </div>
                             </div>
-                            
                         )
                     })}
                 </ul>

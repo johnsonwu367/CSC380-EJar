@@ -41,17 +41,19 @@ const AddContributorModal = ({ closeModal }) => {
                 <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
             </div> */}
             <div className='title'>
-                <h1>Adding Contributor</h1>
+                <h1>Add Contributor</h1>
             </div>
             <div className='body'>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className='inputRow'>
                         <label htmlFor='name'>Email: </label>
-                        <input className='inputBox' type='email' name='name' placeholder='Enter contributor email' value={contributorEmail} onChange={handleChange}/>
+                        <input className='inputBox' style={{width: '250px'}} type='email' name='name' placeholder='Enter contributor email' value={contributorEmail} onChange={handleChange}/>
                         <p className='errMsg'>{emailError}</p>
                     </div>
-                    <button className = 'submitBtn' type='submit'>Submit</button>
-                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
+                    <div className='buttons'>
+                        <button className = 'submitBtn' type='submit'>Submit</button>
+                        <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
+                    </div>
                 </form>
             </div>
             {/* <div className='footer'>

@@ -14,7 +14,7 @@
     width: 60%;
     height: 80%;
     border-radius: 12px;
-    background-image: url("./Images/openJar_Background.png");
+    background-image: url("../Images/openJar_Background.png");
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
@@ -31,11 +31,26 @@
     cursor: pointer;
 }
 
+.openJarContentsUl {
+    /* border: 1px solid black; */
+    height: 100%;
+    margin-top: 15px;
+    overflow: auto;
+}
+
+.contentBoxContainer {
+    /* border: 1px solid black; */
+    padding: 20px;
+}
+
 .contentBox {
-    width: 50%;
+    display: inline-block;
+    /* border: 1px solid black; */
     border-radius: 12px;
     background-color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 25px;
+    padding: 20px;
+}
+
+.contentBox h4 {
+    padding-bottom: 10px;
 }
