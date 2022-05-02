@@ -7,13 +7,13 @@ import { IoMdAdd } from 'react-icons/io';
 import { FiEdit3 } from 'react-icons/fi';
 import { GrOverview } from 'react-icons/gr'
 import { useNavigate } from 'react-router-dom';
-import AddContentModal from '../personalJar/AddContentModal';
+import AddContentModal from '../Modals/AddContentModal';
 import axios from 'axios';
-import JarContentModal from '../personalJar/JarContentModal';
+import JarContentModal from '../Modals/JarContentModal';
 import AddContributorModal from '../personalJar/AddContributorModal';
-import DeleteJarModal from '../personalJar/DeleteJarModal';
+import DeleteJarModal from '../Modals/DeleteJarModal';
 import RemoveContributorModal from '../personalJar/RemoveContributorModal';
-import OpeningTimeModal from '../personalJar/OpeningTimeModal';
+import OpeningTimeModal from '../Modals/OpeningTimeModal';
 
 const OwnerJarSidebar = () => {
   let navigate = useNavigate();

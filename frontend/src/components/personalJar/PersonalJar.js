@@ -17,9 +17,9 @@ const PersonalJar = () => {
               <h4>Hooray, the Jar opening time is up! Click on "Open Jar" to view all the contents in the jar!</h4>
             </div>
           </div>
-        <div className='jarImg'>
-          <img src={pic} alt=''/>
-        </div>
+          <div className='jarImg'>
+            <img src={pic} alt=''/>
+          </div>
         </div>
       </div>
       :

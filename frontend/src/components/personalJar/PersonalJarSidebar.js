@@ -5,11 +5,11 @@ import { FiEdit3 } from 'react-icons/fi';
 import { BiTime } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import axios from 'axios';
-import AddContentModal from './AddContentModal';
+import AddContentModal from '../Modals/AddContentModal';
 import AddContributorModal from './AddContributorModal';
-import DeleteJarModal from './DeleteJarModal';
-import JarContentModal from './JarContentModal';
-import OpeningTimeModal from './OpeningTimeModal';
+import DeleteJarModal from '../Modals/DeleteJarModal';
+import JarContentModal from '../Modals/JarContentModal';
+import OpeningTimeModal from '../Modals/OpeningTimeModal';
 import { useNavigate } from 'react-router-dom';
 
 

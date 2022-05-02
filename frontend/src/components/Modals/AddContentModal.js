@@ -41,17 +41,19 @@ const AddContentModal = ({ closeModal }) => {
                 <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
             </div> */}
             <div className='title'>
-                <h1>Adding Jar Content</h1>
+                <h1>Add Jar Content</h1>
             </div>
             <div className='body'>
                 <form onSubmit={handleSubmit}>
                     <div>
                         {/* <label htmlFor='name'>Jar Name: </label> */}
-                        <textarea className='contentsTxtArea' cols='50' rows='5' type='text' name='name' placeholder='Enter content' value={content} onChange={handleChange}/>
+                        <textarea className='contentsTxtArea' cols='50' rows='10' type='text' name='name' placeholder='Enter content' value={content} onChange={handleChange}/>
                     </div>
                     <p className='errMsg'>{addjarContentError}</p>
-                    <button className = 'submitBtn' type='submit'>Submit</button>
-                    <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
+                    <div className='buttons'>
+                        <button className = 'submitBtn' type='submit'>Submit</button>
+                        <button className = 'cancelBtn' onClick={() => closeModal(false)}>Cancel</button>
+                    </div>
                 </form>
             </div>
             {/* <div className='footer'>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import "../css/Modal.css";
 import { FaTimes } from 'react-icons/fa';
 import OpenContentModal from './OpenContentModal';
+import pic from '../Images/Note_Blue.png';
 
 function JarContentModal({ closeModal }) {
     const jarContents = JSON.parse(localStorage.getItem('jar-contents'));
@@ -19,7 +20,7 @@ function JarContentModal({ closeModal }) {
     }
   return (
     <div className='modalBg'>
-        <div className='modalContainer'>
+        <div className='modalContentsContainer'>
             <div className='closeBtnDiv'>
                 <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
             </div>
@@ -30,10 +31,15 @@ function JarContentModal({ closeModal }) {
                 {jarContents.length === 0 ? 
                     <p>Sorry, there are currently no contents in this jar</p>
                     :
-                    <ul>
+                    <ul className='contentsUl'>
                     {jarContents.map((contents, index) => {
                         return (
-                            <li key={index}><div onClick={() => {handleOpenContent(contents.id_String, contents.jar_id, contents.owner_email, contents.message)}}>{contents.created}</div></li>
+                            <li className='contentsLi' key={index}>
+                                <div className='imgContainer' onClick={() => {handleOpenContent(contents.id_String, contents.jar_id, contents.owner_email, contents.message)}}>
+                                    <img className='contentImg' src={pic} alt=''/>
+                                    <p>{contents.created}</p>
+                                </div>
+                            </li>
                         )
                     })}
                 </ul>

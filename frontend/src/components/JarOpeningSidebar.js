@@ -3,10 +3,10 @@ import "./css/Sidebar.css";
 import { GiMasonJar } from 'react-icons/gi';
 import { MdDeleteForever } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import DeleteJarModal from './personalJar/DeleteJarModal';
+import DeleteJarModal from './Modals/DeleteJarModal';
 import axios from 'axios';
 import OpenJarModal from './OpenJarModal';
-import ContributorRemoveJarModal from './contributingJar/ContributorRemoveJarModal';
+import ContributorRemoveJarModal from './Modals/ContributorRemoveJarModal';
 
 const JarOpeningSidebar = () => {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));

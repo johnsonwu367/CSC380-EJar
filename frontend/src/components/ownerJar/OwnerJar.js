@@ -1,6 +1,6 @@
 import React from 'react';
 import OwnerJarSidebar from './OwnerJarSidebar';
-import pic from '../Images/eJar.jpg';
+import pic from '../Images/Empty_EJar_2.png';
 import JarOpeningSidebar from '../JarOpeningSidebar';
 
 const OwnerJar = () => {
@@ -9,15 +9,32 @@ const OwnerJar = () => {
     currJarInfo.status==="openable" ?
       <div>
         <JarOpeningSidebar/>
-        <h1>{currJarInfo.name} Jar</h1>
-        <h5>Hooray, the Jar opening time is up! Click on "Open Jar" to view the contents in the jar!</h5>
-        <img src={pic} alt=''/>
+        <div className='contentsContainer'>
+          <div className='jarHeading'>
+            <div className='headingContents'>
+              <h1>{currJarInfo.name} Jar</h1>
+              <h4>Hooray, the Jar opening time is up! Click on "Open Jar" to view the contents in the jar!</h4>
+            </div>
+          </div>
+          <div className='jarImg'>
+            <img src={pic} alt=''/>
+          </div>
+        </div>
       </div>
       :
       <div>
         <OwnerJarSidebar/>
-        <h1>{currJarInfo.name} Jar</h1>
-        <img src={pic}/>
+        <div className='contentsContainer'>
+          <div className='jarHeading'>
+            <div className='headingContents'>
+              <h1>{currJarInfo.name} Jar</h1>
+              <h4>Click on "Add Jar Content" to add some beautiful memories to the jar!</h4>
+            </div>
+          </div>
+          <div className='jarImg'>
+            <img src={pic} alt=''/>
+          </div>
+        </div>
       </div>
   )
 }

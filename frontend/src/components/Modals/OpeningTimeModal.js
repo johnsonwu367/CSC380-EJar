@@ -86,17 +86,17 @@ function OpeningTimeModal({ closeModal }) {
             </div>
             <div className='body'>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className='inputRow'>
                         <label htmlFor='name'>Days: </label>
                         <input type='text' name='days' value={values.days} onChange={handleChange}/>
                     </div>
                     <p className='errMsg'>{dayError}</p>
-                    <div>
+                    <div className='inputRow'>
                         <label htmlFor='tag'>Hours: </label>
                         <input type='text' name='hours' value={values.hours} onChange={handleChange}/>
                     </div>
                     <p className='errMsg'>{hourError}</p>
-                    <div>
+                    <div className='inputRow'>
                         <label htmlFor='tag'>Minutes: </label>
                         <input type='text' name='minutes' value={values.minutes} onChange={handleChange}/>
                     </div>

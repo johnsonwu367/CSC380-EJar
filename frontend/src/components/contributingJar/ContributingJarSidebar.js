@@ -5,9 +5,9 @@ import { IoMdAdd } from 'react-icons/io'
 import { FiEdit3 } from 'react-icons/fi'
 import { MdDeleteForever } from 'react-icons/md'
 import axios from 'axios'
-import JarContentModal from '../personalJar/JarContentModal'
-import AddContentModal from '../personalJar/AddContentModal'
-import ContributorRemoveJarModal from './ContributorRemoveJarModal'
+import JarContentModal from '../Modals/JarContentModal'
+import AddContentModal from '../Modals/AddContentModal'
+import ContributorRemoveJarModal from '../Modals/ContributorRemoveJarModal'
 
 const ContributingJarSidebar = () => {
   const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));

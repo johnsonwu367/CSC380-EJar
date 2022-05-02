@@ -45,7 +45,7 @@ function OpenContentModal({ closeModal }) {
                 <h1>View Content</h1>
             </div>
             <div className='body'>
-                <textarea className='contentsTxtArea' cols='50' rows='5' type="text" disabled={editDisabled} value={currentMessage} onChange={handleChange}/>
+                <textarea className='contentsTxtArea' cols='50' rows='10' type="text" disabled={editDisabled} value={currentMessage} onChange={handleChange}/>
             </div>
             {editDisabled ? 
                    <div className='footer'>
