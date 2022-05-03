@@ -39,7 +39,7 @@ const PersonalJarSidebar = () => {
   return (
       <div className='Sidebar'>
         <div className='header'>
-            <h1 className='SidebarTitle' onClick={backToJarCollection}>EJar</h1>
+            <h1 className='SidebarTitle' onClick={backToJarCollection}>EJAR</h1>
         </div>
         
       <ul className='Sidebar-List'>

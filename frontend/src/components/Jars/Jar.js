@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {LinkJars, DivJarsPic, JarTag, FigureJarWrap, ImgJar, DivJarsInfo, JarsH5} from './JarElements';
+import React from 'react';
+import {useNavigate} from 'react-router-dom';
+import { GrStatusCriticalSmall } from 'react-icons/gr';
+import {LinkJars, DivJarsPic, JarTag, FigureJarWrap, ImgJar, DivJarsInfo, JarsH5, JarStatus} from './JarElements';
 
 function Jar(props, jar ) {
     let navigate = useNavigate();
@@ -27,6 +28,17 @@ function Jar(props, jar ) {
             </DivJarsInfo>
             <ImgJar alt='Jar Image' src={props.src}/>
             <JarTag>{props.label}</JarTag>
+            { (() => {
+                switch(props.status) {
+                    case 'openable':
+                        return <JarStatus style={{color: "green"}}><GrStatusCriticalSmall/></JarStatus>;
+                    case 'notSet':
+                        return <JarStatus style={{color: "red"}}><GrStatusCriticalSmall/></JarStatus>;
+                    default:
+                        return <JarStatus style={{color: "yellow"}}><GrStatusCriticalSmall/></JarStatus>;
+                }
+                })()
+            }
         </FigureJarWrap>
     )
 }

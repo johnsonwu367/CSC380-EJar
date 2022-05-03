@@ -34,16 +34,16 @@ const ContributingJarSidebar = () => {
   return (
     <div className='Sidebar'>
       <div className='header'>
-          <h1 className='SidebarTitle' onClick={backToJarCollection}>EJar</h1>
+          <h1 className='SidebarTitle' onClick={backToJarCollection}>EJAR</h1>
       </div>
         
       <ul className='Sidebar-List'>
       {currJarInfo.opening_Time===0 ?
-              <li className="row"> 
+              <li className="openingTime"> 
                 <div>Jar Opening Time Not Set</div>
               </li>
             :
-              <li className="row"> 
+              <li className="openingTime"> 
                 <div>{currJarInfo.opening_Time}</div>
               </li>
           }

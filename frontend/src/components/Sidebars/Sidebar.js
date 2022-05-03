@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <div className='Sidebar'>
         <div className='header'>
-            <h1>EJar</h1>
+            <h1>EJAR</h1>
         </div>
         
       <ul className='Sidebar-List'>

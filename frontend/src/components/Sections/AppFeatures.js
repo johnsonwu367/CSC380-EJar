@@ -3,7 +3,7 @@ import {AppFeatBg, AppFeatContainer, AppFeatContent, AppFeatH1, AppFeatP} from "
 
 const AppFeatures = () => {
   return (
-      <AppFeatContainer>
+      <AppFeatContainer id='app-features'>
           <AppFeatBg>
               <AppFeatContent>
                   <AppFeatH1>EJAR Features</AppFeatH1>

@@ -3,7 +3,7 @@ import {ContactBg, ContactContainer, ContactContent, ContactH1, ContactP} from "
 
 const Contact = () => {
   return (
-      <ContactContainer>
+      <ContactContainer id='contact'>
           <ContactBg>
               <ContactContent>
                   <ContactH1>About Us</ContactH1>

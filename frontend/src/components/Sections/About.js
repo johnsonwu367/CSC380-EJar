@@ -3,7 +3,7 @@ import { AboutH1, AboutContainer, AboutContent, AboutBg, AboutP} from './AboutEl
 
 const About = () => {
   return (
-    <AboutContainer>
+    <AboutContainer id='about'>
         <AboutBg>
             <AboutContent>
       <AboutH1>About EJAR</AboutH1>

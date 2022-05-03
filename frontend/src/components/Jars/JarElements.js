@@ -91,3 +91,15 @@ export const JarTag = styled.p`
   position: absolute;
 `;
 
+export const JarStatus = styled.p`
+  bottom: 0;
+  top: 50px;
+  right: 20px;
+  /* padding: 1rem 1rem; */
+  font-size: 1.5rem;
+  /* background: black; */
+  /* color: black; */
+  position: absolute;
+`;
+
+

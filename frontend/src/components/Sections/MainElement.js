@@ -7,7 +7,7 @@ export const MainContainer = styled.div`
     justify-content: center;
     align-items: center;
     padding: 0 30px;
-    height: 800px;
+    height: 100vh;
     position: relative;
     z-index: 1;
 `
@@ -29,9 +29,10 @@ export const MainBg = styled.div`
 
 export const MainContent = styled.div`
     z-index: 3;
+    margin-top: 80px;
     width: 100%;
     position: absolute;
-    padding: 100px 24px;
+    padding: 90px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;

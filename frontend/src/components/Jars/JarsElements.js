@@ -19,7 +19,7 @@ export const JarItems = styled.div`
     /* max-height: 100%; */
     padding: 0 2rem;
     /* width: 650 px; */
-    /* text-transform: uppercase; */
+    text-transform: uppercase;
     /* line-height: 1; */
     /* font-weight: bold; */
     /* border: 3px solid #73AD21; */
@@ -54,7 +54,7 @@ export const JarsP = styled.p`
 
 export const JarCard = styled.div`
   /* position: relative; */
-  border: 3px solid #73AD21; 
+  /* border: 3px solid #73AD21;  */
   margin: 0 2rem;
   /* line-height: 1; */
   width: 300px;
