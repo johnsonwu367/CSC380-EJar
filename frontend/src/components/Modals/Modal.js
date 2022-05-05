@@ -51,13 +51,10 @@ function Modal({ closeModal }) {
                 tag: values.tag.trim(),
                 type: values.type
             };
-            // console.log(data);
             closeModal(false)
             const res = await axios.post("http://localhost:9088/ejar/createJar", data);
-            console.log(res.data);
             const res2 = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
             localStorage.setItem('jars', JSON.stringify(res2.data));
-            // console.log(JSON.parse(localStorage.getItem('jars')))
             window.location.reload();
         }
     }
@@ -93,9 +90,6 @@ function Modal({ closeModal }) {
                     </div>
                 </form>
             </div>
-            {/* <div className='footer'>
-                
-            </div> */}
         </div>
     </div>
   )

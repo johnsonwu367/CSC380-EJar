@@ -5,7 +5,6 @@ import axios from 'axios';
 
 function OpeningTimeModal({ closeModal }) {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
-    // console.log(currJarInfo);
     const loginData = JSON.parse(localStorage.getItem('loginData'));
     const [dayError, setDayError] = useState("");
     const [hourError, setHourError] = useState("");
@@ -21,7 +20,6 @@ function OpeningTimeModal({ closeModal }) {
         const { name, value } = e.target;
         const re = /^[0-9\b]+$/;
         if (value === '' || re.test(value)) {
-            // console.log(value);
             setValues({
                 ...values,
                 [name]: value
@@ -62,9 +60,7 @@ function OpeningTimeModal({ closeModal }) {
                 hours: values.hours,
                 minutes: values.minutes
             };
-            // console.log(data);
             const res = await axios.post("http://localhost:9088/ejar/setOpeningTime", data);
-            // console.log(res.data);
             const res2 = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
             localStorage.setItem('jars', JSON.stringify(res2.data));
             let index = currJarInfo.index;
@@ -72,7 +68,6 @@ function OpeningTimeModal({ closeModal }) {
             currJarInfo.opening_Time = openTime;
             localStorage.setItem('currentJar', JSON.stringify(currJarInfo));
             closeModal(false)
-            // window.location.reload();
         }
     }
   return (

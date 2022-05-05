@@ -52,11 +52,11 @@ export const AppFeatH1 = styled.h1`
 export const AppFeatP = styled.p`
     margin-top: 24px;
     color: white;
-    font-size: 24px;
+    font-size: 22px;
     text-align: center;
     max-width: 600px;
     @media screen and (max-width: 768px) {
-        font-size: 24px;
+        font-size: 22px;
     }
     @media screen and (max-width: 480px){
         font-size: 18px;

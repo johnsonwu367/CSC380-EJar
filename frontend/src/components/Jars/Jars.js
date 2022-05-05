@@ -18,14 +18,6 @@ const Jars = () => {
             sharedJars.push(jarData[i]);
         }
     };
-    console.log(sharedJars);
-    console.log(personalJars);
-    // console.log(jarData[0])
-    // const handleOpenJar = (name, jar) => {
-    //     console.log()
-    //     localStorage.removeItem('loginData');
-    //     // navigate("/");
-    // };
     return(
         <Tabs className="jarTabs">
             <TabList>

@@ -28,9 +28,7 @@ const AddContributorModal = ({ closeModal }) => {
                 jarId: currJarInfo.id,
                 email: contributorEmail.trim(),
             };
-            console.log(data);
             const res = await axios.post("http://localhost:9088/ejar/addContributor", data);
-            console.log(res.data);
             closeModal(false);
         }
     }

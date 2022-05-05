@@ -15,7 +15,6 @@ function JarContentModal({ closeModal }) {
             email: email,
             message: message
         };
-        // console.log(data);
         localStorage.setItem('currentContent', JSON.stringify(data))
     }
   return (
@@ -45,9 +44,6 @@ function JarContentModal({ closeModal }) {
                 </ul>
                 }
             </div>
-            {/* <div className='footer'>
-                
-            </div> */}
         </div>
         {openContent && <OpenContentModal closeModal={setOpenContent}/>}
     </div>

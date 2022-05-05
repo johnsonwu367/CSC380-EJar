@@ -30,23 +30,18 @@ const AddContentModal = ({ closeModal }) => {
                 message: content.trim()
             };
             const res = await axios.post("http://localhost:9088/ejar/addJarContent", data);
-            console.log(res.data);
             closeModal(false);
         }
     }
   return (
     <div className='modalBg'>
         <div className='modalContainer'>
-            {/* <div className='closeBtnDiv'>
-                <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
-            </div> */}
             <div className='title'>
                 <h1>Add Jar Content</h1>
             </div>
             <div className='body'>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        {/* <label htmlFor='name'>Jar Name: </label> */}
                         <textarea className='contentsTxtArea' cols='50' rows='10' type='text' name='name' placeholder='Enter content' value={content} onChange={handleChange}/>
                     </div>
                     <p className='errMsg'>{addjarContentError}</p>

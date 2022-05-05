@@ -10,7 +10,6 @@ import ContributorRemoveJarModal from './Modals/ContributorRemoveJarModal';
 
 const JarOpeningSidebar = () => {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
-    // console.log(currJarInfo);
     const [openJar, setOpenJar] = useState(false);
     const [deleteJarModal, setDeleteJarModal] = useState(false);
     const [contributorDeleteJarModal, setContributorDeleteJarModal] = useState(false);
@@ -18,8 +17,6 @@ const JarOpeningSidebar = () => {
 
     const handleOpenJar = async () => {
         const res = await axios.post("http://localhost:9088/ejar/openJar", currJarInfo.id);
-        // pass in or set all recieved jar content
-        // console.log(res.data);
         localStorage.setItem('jar-contents', JSON.stringify(res.data));
         setOpenJar(true);
     }

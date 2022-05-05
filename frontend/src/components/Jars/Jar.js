@@ -1,12 +1,11 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import { GrStatusCriticalSmall } from 'react-icons/gr';
-import {LinkJars, DivJarsPic, JarTag, FigureJarWrap, ImgJar, DivJarsInfo, JarsH5, JarStatus} from './JarElements';
+import {JarTag, FigureJarWrap, ImgJar, DivJarsInfo, JarsH5, JarStatus} from './JarElements';
 
 function Jar(props, jar ) {
     let navigate = useNavigate();
     function handleOpenJar(currJar) {
-        // console.log(currJar);
         localStorage.setItem('currentJar', JSON.stringify(currJar))
         if (currJar.type==="personal") {
             navigate("/personal-jar");
@@ -15,11 +14,6 @@ function Jar(props, jar ) {
         } else {
             navigate("/contributing-jar");
         }
-        // console.log(JSON.parse(localStorage.getItem('currentJar')))
-
-        // if jar is personal jar navigate to personal jar page
-        
-        // else navigate to owner jar page or collaborator page
     };
     return (   
         <FigureJarWrap data-category={props.label} onClick={() => {let currJar = {id: props.id, name: props.text, type: props.type, opening_Time: props.opening_Time, status: props.status, index: props.index}; handleOpenJar(currJar);}}>
