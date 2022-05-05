@@ -12,17 +12,12 @@ function OpenContentModal({ closeModal }) {
     const [editDisabled, setEditDisabled] = useState(true);
     const handleChange = e => {
         setCurrentMessage(e.target.value);
-        // console.log(currentMessage);
     };
     function cancelEdit() {
         setEditDisabled(true);
-        // setCurrentContent({
-        //     message: currentContent.message
-        // });
     }
     const handleDelete = async () => {
         const res = await axios.post("http://localhost:9088/ejar/deleteContent", currentContent.content_id);
-        console.log(res.data);
         const res2 = await axios.post("http://localhost:9088/ejar/getJarContent", {jarId: currJarInfo.id, email: loginData.email});
         localStorage.setItem('jar-contents', JSON.stringify(res2.data));
         closeModal(false);
@@ -30,7 +25,6 @@ function OpenContentModal({ closeModal }) {
 
     const handleSave = async () => {
         const res = await axios.post("http://localhost:9088/ejar/updateContent", {content_id: currentContent.content_id, message: currentMessage});
-        console.log(res.data);
         const res2 = await axios.post("http://localhost:9088/ejar/getJarContent", {jarId: currJarInfo.id, email: loginData.email});
         localStorage.setItem('jar-contents', JSON.stringify(res2.data));
         closeModal(false);

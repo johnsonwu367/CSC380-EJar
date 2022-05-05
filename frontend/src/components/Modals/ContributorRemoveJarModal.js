@@ -9,20 +9,14 @@ function ContributorRemoveJarModal({ closeModal }) {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
     const handleSubmit = async () =>{
         const res = await axios.post("http://localhost:9088/ejar/removeContributor", {jarId: currJarInfo.id, emails: [loginData.email]});
-        // console.log(res.data);
         const res2 = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
-        // console.log(res2.data);
         localStorage.setItem('jars', JSON.stringify(res2.data));
-        // console.log(JSON.parse(localStorage.getItem('jars')));
         navigate("/jar-collections");
 
     }
   return (
     <div className='modalBg'>
         <div className='modalContainer'>
-            {/* <div className='closeBtnDiv'>
-                <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
-            </div> */}
             <div className='title'>
                 <h1>Delete Jar</h1>
             </div>

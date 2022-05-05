@@ -5,7 +5,6 @@ import { MdDeleteForever } from 'react-icons/md';
 import { IoPersonRemoveSharp, IoPersonAddSharp } from 'react-icons/io5';
 import { IoMdAdd } from 'react-icons/io';
 import { FiEdit3 } from 'react-icons/fi';
-import { GrOverview } from 'react-icons/gr'
 import { useNavigate } from 'react-router-dom';
 import AddContentModal from '../Modals/AddContentModal';
 import axios from 'axios';
@@ -35,14 +34,12 @@ const OwnerJarSidebar = () => {
   const viewJarContent = async () => {
     const res = await axios.post("http://localhost:9088/ejar/getJarContent", {jarId: currJarInfo.id, email: loginData.email});
     localStorage.setItem('jar-contents', JSON.stringify(res.data));
-    // console.log(JSON.parse(localStorage.getItem('jar-contents')));
     setJarContentModal(true);
 }
 
 const getContributors = async () => {
   const res = await axios.post("http://localhost:9088/ejar/getContributors", currJarInfo.id);
   localStorage.setItem('jar-contributors', JSON.stringify(res.data));
-  // console.log(JSON.parse(localStorage.getItem('jar-contributors')));
   setRemoveContributorModal(true);
 }
 

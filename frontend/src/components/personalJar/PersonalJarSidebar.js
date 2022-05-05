@@ -26,7 +26,6 @@ const PersonalJarSidebar = () => {
     const viewJarContent = async () => {
         const res = await axios.post("http://localhost:9088/ejar/getJarContent", {jarId: currJarInfo.id, email: loginData.email});
         localStorage.setItem('jar-contents', JSON.stringify(res.data));
-        // console.log(JSON.parse(localStorage.getItem('jar-contents')));
         setJarContentModal(true);
     }
 
@@ -43,7 +42,6 @@ const PersonalJarSidebar = () => {
         </div>
         
       <ul className='Sidebar-List'>
-        {/* If jar opening time is set display time and give option to change jar opening time. Need a conditional statement here */}
         {currJarInfo.opening_Time===0 ?
               <li className="row" onClick={setOpeningTimeModal}> 
                 <div id="icon"><BiTime/></div> 
@@ -58,9 +56,6 @@ const PersonalJarSidebar = () => {
             <div id="icon"><IoMdAdd/></div> 
             <div id="title">Add Jar Content</div>
         </li>
-        {/* This button and function will be gone when jar open time is set */}
-        {/* when view jar content button is clicked modal appears with list of jar contents when a jar content is clicked it opens another modal with actual contents displayed on the right and options to edit or delete on the left */}
-        {/* () => setJarContentModal(true) */}
         {currJarInfo.opening_Time===0 && 
           <li className="row" onClick={viewJarContent}> 
             <div id="icon"><FiEdit3/></div> 

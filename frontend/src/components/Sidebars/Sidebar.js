@@ -3,7 +3,7 @@ import "../css/Sidebar.css";
 import { IoMdAdd } from 'react-icons/io'
 import { CgLogOut } from 'react-icons/cg';
 import Modal from '../Modals/Modal';
-import LogoutModal from '../LogoutModal';
+import LogoutModal from '../Modals/LogoutModal';
 
 const Sidebar = () => {
 

@@ -20,8 +20,6 @@ const ContributingJarSidebar = () => {
   const viewJarContent = async () => {
     const res = await axios.post("http://localhost:9088/ejar/getJarContent", {jarId: currJarInfo.id, email: loginData.email});
     localStorage.setItem('jar-contents', JSON.stringify(res.data));
-    // console.log(res);
-    // console.log(JSON.parse(localStorage.getItem('jar-contents')));
     setJarContentModal(true);
   }
 

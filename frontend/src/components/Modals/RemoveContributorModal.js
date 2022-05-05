@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "../css/Modal.css";
-import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 
 function RemoveContributorModal({ closeModal }) {
@@ -20,7 +19,6 @@ function RemoveContributorModal({ closeModal }) {
                 emailSelected.splice(index, 1);
             }
         }
-        console.log(emailSelected);
     }
 
     const validate = () => {
@@ -36,7 +34,6 @@ function RemoveContributorModal({ closeModal }) {
         const isValid = validate();
         if (isValid) {
             const res = await axios.post("http://localhost:9088/ejar/removeContributor", {jarId: currJarInfo.id, emails: emailSelected});
-            console.log(res.data);
             closeModal(false);
         }
     }
@@ -44,9 +41,6 @@ function RemoveContributorModal({ closeModal }) {
   return (
     <div className='modalBg'>
         <div className='modalContainer'>
-            {/* <div className='closeBtnDiv'>
-                <FaTimes className='faTimesBtn' onClick={() => closeModal(false)}/>
-            </div> */}
             <div className='title'>
                 <h1>Remove Contributor</h1>
             </div>

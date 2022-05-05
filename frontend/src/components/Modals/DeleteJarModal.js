@@ -9,11 +9,8 @@ function DeleteJarModal({ closeModal }) {
     const currJarInfo = JSON.parse(localStorage.getItem('currentJar'));
     const deleteJar = async () =>{
         const res = await axios.post("http://localhost:9088/ejar/deleteJar", currJarInfo.id);
-        // console.log(res.data);
         const res2 = await axios.post("http://localhost:9088/ejar/getJar", loginData.email);
-        // console.log(res2.data);
         localStorage.setItem('jars', JSON.stringify(res2.data));
-        // console.log(JSON.parse(localStorage.getItem('jars')));
         navigate("/jar-collections");
     }
   return (
