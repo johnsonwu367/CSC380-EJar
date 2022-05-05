@@ -50,6 +50,7 @@ export const ContactP = styled.p`
     color: white;
     font-size: 24px;
     text-align: center;
+    float: left;
     max-width: 600px;
     @media screen and (max-width: 768px) {
         font-size: 24px;
@@ -57,4 +58,25 @@ export const ContactP = styled.p`
     @media screen and (max-width: 480px){
         font-size: 18px;
     }
+`
+export const ContactImg = styled.img`
+position: relative;
+width: 75px;
+height: 75px;
+float: right;
+margin-left: 10px;
+
+ &:hover {
+cursor: pointer;
+} 
+`
+
+export const ContactContainer2 = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // padding: 0 30px;
+    // height: 100vh;
+    // position: relative;
+    // z-index: 1;
 `
